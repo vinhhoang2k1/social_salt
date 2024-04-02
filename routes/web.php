@@ -14,20 +14,5 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
-// Route::inertia('/about', 'Home');
-
-Route::get('/', function () {
-    return Inertia::render('Home', ['test' => 'working']);
-});
-
-Route::get('/about', function () {
-    return Inertia::render('About', ['test' => 'working']);
-});
-
-Route::get('/login', function () {
-    return Inertia::render('Guest/Login/index', ['test' => 'working']);
-});
+require __DIR__ . '/auth.php';
