@@ -27,3 +27,7 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return Inertia::render('About', ['test' => 'working']);
 });
+
+Route::get('/login', function () {
+    return Inertia::render('Guest/Login/index', ['test' => 'working']);
+});
