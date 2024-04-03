@@ -16,7 +16,7 @@ use Inertia\Inertia;
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function() {
+    Route::get('/', function() {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
 });
