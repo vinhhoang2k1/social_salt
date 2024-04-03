@@ -6,9 +6,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-    ->name('login');
+        ->name('login');
     Route::get('/register', [RegisterController::class, 'create'])
-    ->name('register');
+        ->name('register');
 
-    Route::post('register', [RegisterController::class, 'store']);
+    Route::post('/register', [RegisterController::class, 'store']);
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
 });

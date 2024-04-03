@@ -15,4 +15,13 @@ use Inertia\Inertia;
 */
 
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function() {
+        return Inertia::render('Authenticated/Home/Home');
+    })->name('home');
+});
+
+
+
+
 require __DIR__ . '/auth.php';

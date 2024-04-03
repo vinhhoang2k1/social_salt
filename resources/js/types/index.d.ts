@@ -22,7 +22,7 @@ export interface ICreateUser {
   email: string;
   password: string;
   password_confirmation: string;
-  role: 'Owner' | 'Maintainer' | 'Cashier';
+  // role: 'Owner' | 'Maintainer' | 'Cashier';
 }
 
 export interface IUser extends ICreateUser, BasicModel, SoftDelete {
