@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
     width: 960px;
     background: #fff;
     border-radius: 10px;
@@ -11,7 +11,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 177px 130px 33px 95px;
-    .login-pic {
+    .register-pic {
         will-change: transform;
         transform: perspective(300px) rotateX(0deg) rotateY(0deg);
         .img {
@@ -25,7 +25,7 @@
             }
         }
     }
-    .login-form {
+    .register-form {
         width: 300px;
         .title {
             margin-bottom: 30px;

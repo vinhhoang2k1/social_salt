@@ -8,7 +8,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
   return (
     <>
-      <div className="relative min-h-screen print:bg-white bg-gray-100 bg-center">
+      <div className="relative min-h-screen bg-gray-100 bg-center">
         {children}
       </div>
       <div className="fixed print:hidden bottom-5 z-50 right-3">
