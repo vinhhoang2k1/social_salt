@@ -288,3 +288,5 @@ export type ISubscriptionLinks = {
   enhanced: { monthly: CheckoutOptions, annually: CheckoutOptions };
   advanced: { monthly: CheckoutOptions, annually: CheckoutOptions };
 })
+
+export type PropsIconSvg = { currentColor?: string, width?: number, height?: number, active?: boolean }

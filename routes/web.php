@@ -19,6 +19,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function() {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
+    Route::get('/profile', function() {
+        return Inertia::render('Authenticated/Profile/Profile');
+    })->name('profile');
 });
 
 

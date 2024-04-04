@@ -1,20 +1,17 @@
-import { router } from '@inertiajs/react'
-import React from 'react'
+import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
+import { Head, router } from "@inertiajs/react";
 
-type Props = {}
+type Props = {};
 
 const Home = (props: Props) => {
-  const handleLogout = (e) => {
-    router.post('logout');
-  }
-  return (
-    <div>
-      <h1>hello home</h1>
-      <button type="button" onClick={handleLogout}>
-      handle logout
-      </button>
-    </div>
-  )
-}
+    return (
+        <>
+            <Head title="Home page" />
+            <AuthenticateLayout>
+              this is content
+            </AuthenticateLayout>
+        </>
+    );
+};
 
-export default Home
+export default Home;
