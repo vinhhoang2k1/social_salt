@@ -11,7 +11,7 @@ export default function AuthenticateLayout({ children }: PropsWithChildren) {
         <>
             <div className="relative min-h-screen bg-center authenticate-layout">
                 <SideBarLeft />
-                <section className="px-2 main">{children}</section>
+                <section className="px-2 main space-left">{children}</section>
             </div>
             <div className="fixed print:hidden bottom-5 z-50 right-3">
                 <Flash flash={flash} />
