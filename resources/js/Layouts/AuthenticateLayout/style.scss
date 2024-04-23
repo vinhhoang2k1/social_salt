@@ -1,8 +1,12 @@
 .authenticate-layout {
     display: flex;
     .side-bar-left {
+        position: fixed;
         padding: 30px 10px 30px 10px;
         border-right: 1px solid #d9d9d9;
+        height: 100vh;
+        background-color: #fff;
+        width: 200px;
         .logo {
         }
         .menus {
@@ -37,5 +41,8 @@
     .main {
         width: 100%;
         padding-top: 0.5rem;
+        &.space-left {
+            margin-left: 200px;
+        }
     }
 }

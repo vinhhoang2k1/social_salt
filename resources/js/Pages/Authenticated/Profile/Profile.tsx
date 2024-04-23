@@ -1,8 +1,10 @@
 import AuthenticateLayout from '@/Layouts/AuthenticateLayout';
+import { IBasePropsPage } from '@/types/common/Common.type';
 import { Head } from '@inertiajs/react';
-import React from 'react'
 
-type Props = {}
+type Props = {
+    
+} & IBasePropsPage<{}>
 
 const Profile = (props: Props) => {
     return (
