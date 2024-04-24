@@ -45,4 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     protected $hidden = [
         'password',
     ];
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
 }

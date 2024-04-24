@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,9 +20,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function() {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
-    Route::get('/profile', function() {
-        return Inertia::render('Authenticated/Profile/Profile');
-    })->name('profile');
+    Route::group(['prefix' => '/profile'], function() {
+        Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
+    });
 });
 
 
