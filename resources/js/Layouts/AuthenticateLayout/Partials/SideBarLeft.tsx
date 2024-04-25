@@ -6,7 +6,9 @@ import NotificationIcon from "@/Components/Icons/Notification";
 import ProfileIcon from "@/Components/Icons/Profile";
 import ReelsIcon from "@/Components/Icons/Reels";
 import SearchIcon from "@/Components/Icons/Search";
-import { router } from "@inertiajs/react";
+import { IConfig, IResUser } from "@/types/common/Common.type";
+import { PageProps } from "@inertiajs/inertia";
+import { router, usePage } from "@inertiajs/react";
 import { useMemo } from "react";
 
 const menu = {
@@ -20,6 +22,10 @@ const menu = {
     profile: "/profile",
 };
 const SideBarLeft = () => {
+    const {basePath} = usePage<PageProps>().props.config as IConfig;    
+
+    const {user} = usePage<PageProps>().props.auth as {user: IResUser};    
+
     const menus = useMemo(() => {
         return [
             {
@@ -98,12 +104,13 @@ const SideBarLeft = () => {
                     <ProfileIcon
                         currentColor="#000"
                         active={location.pathname == menu.profile}
+                        avatar={`${basePath}/${user.avatar}`}
                     />
                 ),
                 link: menu.profile,
             },
         ];
-    }, [location.pathname, menu]);
+    }, [location.pathname, menu, user.avatar]);
     return (
         <div className="side-bar-left">
             <div className="head">logo</div>
