@@ -5,6 +5,9 @@ import { Head } from "@inertiajs/react";
 import ListIcon from "./components/Icons/List";
 import SavedIcon from "./components/Icons/Saved";
 import TaggedIcon from "./components/Icons/Tagged";
+import HeartIcon from "./components/Icons/Heart";
+import CommentIcon from "./components/Icons/Comment";
+import Plus from "./components/Icons/Plus";
 import "./style.scss";
 import {
     Tabs,
@@ -58,13 +61,6 @@ const Profile = (props: Props) => {
         ];
     }, [location.pathname, menu]);
 
-    const { auth } = props;
-    const [activeTab, setActiveTab] = useState("posts");
-
-    const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
-    };
-
     const posts = [
         {
             group: "POSTS",
@@ -113,6 +109,13 @@ const Profile = (props: Props) => {
         },
     ];
 
+    const { auth } = props;
+    const [activeTab, setActiveTab] = useState("posts");
+
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+    };
+
     return (
         <>
             <Head title="Home page" />
@@ -155,20 +158,7 @@ const Profile = (props: Props) => {
 
                     <div className="social-media">
                         <div className="add-btn">
-                            <button className="">
-                                <svg
-                                    aria-label="Plus icon"
-                                    className="x1lliihq x1n2onr6 x10xgr34"
-                                    fill="currentColor"
-                                    height="44"
-                                    role="img"
-                                    viewBox="0 0 24 24"
-                                    width="44"
-                                >
-                                    <title>Plus icon</title>
-                                    <path d="M21 11.3h-8.2V3c0-.4-.3-.8-.8-.8s-.8.4-.8.8v8.2H3c-.4 0-.8.3-.8.8s.3.8.8.8h8.2V21c0 .4.3.8.8.8s.8-.3.8-.8v-8.2H21c.4 0 .8-.3.8-.8s-.4-.7-.8-.7z"></path>
-                                </svg>
-                            </button>
+                            <button className=""><Plus/></button>
                             <span>New</span>
                         </div>
 
@@ -200,11 +190,22 @@ const Profile = (props: Props) => {
                                                 key={post.group}
                                                 value={post.group}
                                             >
-                                                <h1>{post.title}</h1>
                                                 <img
                                                     src={post.media_path}
                                                     alt=""
                                                 />
+                                                <div className="media__preview">
+                                                    <div className="media__info">
+                                                        <div className="like">
+                                                            <span><HeartIcon/></span>
+                                                            <span>99</span>
+                                                        </div>
+                                                        <div className="comment">
+                                                            <span><CommentIcon/></span>
+                                                            <span>9</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </TabPanel>
                                         ))}
                                     </div>

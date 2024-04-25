@@ -102,8 +102,37 @@
                 display: flex;
 
                 .media__item {
+                    position: relative;
                     width: 33.33%;
-                    padding: 2px;
+                    margin: 2px;
+                    cursor: pointer;
+
+                    .media__preview {
+                        display: none;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background-color: rgba(0, 0, 0, .2);
+                        .media__info {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100%;
+                            svg, span {
+                                color: #fff;
+                                margin: 0 2px;
+                            }
+                            & > div {
+                                display: flex;
+                                padding: 0px 16px;
+                            }
+                        }
+                    }
+                    &:hover .media__preview{
+                        display: block;
+                    }
                 }
             }
         }
