@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import { IBasePropsPage } from "@/types/common/Common.type";
 import { Head } from "@inertiajs/react";
-import ProfileAvatar from "./components/Avatar";
-import Button from "./components/Button";
+import ListIcon from "./components/Icons/List";
+import SavedIcon from "./components/Icons/Saved";
+import TaggedIcon from "./components/Icons/Tagged";
 import "./style.scss";
 import {
     Tabs,
@@ -15,31 +16,100 @@ import {
 
 type Props = {} & IBasePropsPage<{}>;
 
+const menu = {
+    posts: "/",
+    saved: "/saved",
+    tagged: "/tagged",
+};
+
 const Profile = (props: Props) => {
+    const menus = useMemo(() => {
+        return [
+            {
+                label: "POSTS",
+                icon: (
+                    <ListIcon
+                        currentColor="#000"
+                        active={location.pathname == menu.posts}
+                    />
+                ),
+                link: menu.posts,
+            },
+            {
+                label: "SAVED",
+                icon: (
+                    <SavedIcon
+                        currentColor="#000"
+                        active={location.pathname == menu.saved}
+                    />
+                ),
+                link: menu.saved,
+            },
+            {
+                label: "TAGGED",
+                icon: (
+                    <TaggedIcon
+                        currentColor="#000"
+                        active={location.pathname == menu.tagged}
+                    />
+                ),
+                link: menu.tagged,
+            },
+        ];
+    }, [location.pathname, menu]);
+
     const { auth } = props;
     const [activeTab, setActiveTab] = useState("posts");
-
-    console.log(props);
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
     };
 
-    const postsGroup = [
+    const posts = [
         {
-            label: "POSTS",
-            value: "POSTS",
-            desc: `posts list`,
+            group: "POSTS",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 1",
         },
         {
-            label: "SAVED",
-            value: "SAVED",
-            desc: `saved posts`,
+            group: "SAVED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 2",
         },
         {
-            label: "TAGGED",
-            value: "TAGGED",
-            desc: `tagged posts`,
+            group: "TAGGED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 3",
+        },
+        {
+            group: "POSTS",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 4",
+        },
+        {
+            group: "SAVED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 5",
+        },
+        {
+            group: "TAGGED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 6",
+        },
+        {
+            group: "POSTS",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 7",
+        },
+        {
+            group: "SAVED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 8",
+        },
+        {
+            group: "TAGGED",
+            media_path: "https://i.pravatar.cc/300",
+            title: "post 9",
         },
     ];
 
@@ -51,7 +121,8 @@ const Profile = (props: Props) => {
                     <div className="head">
                         <div className="avatar">
                             <a href="">
-                                <img src="https://i.pravatar.cc/300" alt="" />``
+                                <img src="https://i.pravatar.cc/300" alt="" />
+                                ``
                             </a>
                         </div>
 
@@ -101,51 +172,44 @@ const Profile = (props: Props) => {
                             <span>New</span>
                         </div>
 
-                        <div className="media__list">
-
+                        <div className="media-list">
                             <Tabs value="POSTS">
                                 <TabsHeader>
-                                    {postsGroup.map(({ label, value }) => (
-                                        <Tab key={value} value={value} className="label">
-                                            {label}
+                                    {menus.map((menu) => (
+                                        <Tab
+                                            key={menu.label}
+                                            value={menu.label}
+                                            className="label"
+                                        >
+                                            <div className="group-btn">
+                                                <span className="icon">
+                                                    {menu.icon}
+                                                </span>
+                                                <span className="label">
+                                                    {menu.label}
+                                                </span>
+                                            </div>
                                         </Tab>
                                     ))}
                                 </TabsHeader>
                                 <TabsBody>
-                                    {postsGroup.map(({ value, desc }) => (
-                                        <TabPanel key={value} value={value}>
-                                            {desc}
-                                        </TabPanel>
-                                    ))}
+                                    <div className="media__container">
+                                        {posts.map((post) => (
+                                            <TabPanel
+                                                className="media__item"
+                                                key={post.group}
+                                                value={post.group}
+                                            >
+                                                <h1>{post.title}</h1>
+                                                <img
+                                                    src={post.media_path}
+                                                    alt=""
+                                                />
+                                            </TabPanel>
+                                        ))}
+                                    </div>
                                 </TabsBody>
                             </Tabs>
-
-                            {/* <div className="group-btn">
-                                <button
-                                    className={
-                                        activeTab === "posts" ? "active" : ""
-                                    }
-                                    onClick={() => handleTabClick("posts")}
-                                >
-                                    Posts
-                                </button>
-                                <button
-                                    className={
-                                        activeTab === "saved" ? "active" : ""
-                                    }
-                                    onClick={() => handleTabClick("saved")}
-                                >
-                                    Saved
-                                </button>
-                                <button
-                                    className={
-                                        activeTab === "tagged" ? "active" : ""
-                                    }
-                                    onClick={() => handleTabClick("tagged")}
-                                >
-                                    Tagged
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </div>
