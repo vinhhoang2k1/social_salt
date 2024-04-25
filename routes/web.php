@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\Web\UploadController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +24,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', function() {
         return Inertia::render('Authenticated/Profile/Profile');
     })->name('profile');
+
+    Route::prefix('post')->group(function() {
+        Route::get('create', [PostController::class, 'create']);
+    });
+
+    Route::post('/upload', [UploadController::class, 'upload']);
+    Route::post('/upload-multiple', [UploadController::class, 'uploadMultiple']);
 });
 
 
