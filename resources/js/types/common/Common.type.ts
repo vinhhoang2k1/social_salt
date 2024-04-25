@@ -17,7 +17,7 @@ export interface IResUser {
     deleted_at:string;
     user_status_id:string;
 }
-interface IConfig {
+export interface IConfig {
     basePath: string
 }
 export interface IBasePropsPage<D> {
