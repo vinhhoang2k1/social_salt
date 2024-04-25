@@ -16,7 +16,7 @@ const menu = {
     reels: "/reels",
     messages: "/messages",
     notifications: "/notifications",
-    create: "/create",
+    create: "/post/create",
     profile: "/profile",
 };
 const SideBarLeft = () => {

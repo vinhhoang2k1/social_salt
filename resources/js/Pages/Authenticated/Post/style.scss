@@ -1,0 +1,24 @@
+@import "../../../../scss/variable.scss" ;
+#post__create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    .content {
+        .create-title {
+            margin-bottom: 50px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .media-icon {
+            display: block;
+            margin: auto;
+        }
+        .select-media {
+            cursor: pointer;
+            width: max-content;
+            margin: 20px auto 0;
+            text-align: center;
+        }
+    }
+}
