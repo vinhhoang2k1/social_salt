@@ -64,6 +64,19 @@ class UploadService
         return $folder . '/' . $fileName;
     }
 
+    public function forceUpload($folder, $file) {
+
+        if (!Storage::disk(config('constants.disk_default'))->exists($folder)) {
+            Storage::disk(config('constants.disk_default'))->makeDirectory($folder);
+        }
+
+        $fileName = \Illuminate\Support\Str::random(12) . time() . $file->getBasename() .'.' . $file->getClientOriginalExtension();
+
+        Storage::disk(config('constants.disk_default'))->putFileAs($folder, $file, $fileName);
+
+        return $folder . '/' . $fileName;
+    }
+
     public function realUpload(string $folder, string $file = null, array $option = []) {
 
         if (empty($file)) {

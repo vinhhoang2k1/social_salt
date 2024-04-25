@@ -17,8 +17,12 @@ export interface IResUser {
     deleted_at:string;
     user_status_id:string;
 }
+interface IConfig {
+    basePath: string
+}
 export interface IBasePropsPage<D> {
     errors: any;
+    config: IConfig
     auth: {
         user: IResUser
     };
