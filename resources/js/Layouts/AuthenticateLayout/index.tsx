@@ -13,7 +13,7 @@ export default function AuthenticateLayout({ children }: PropsWithChildren) {
                 <SideBarLeft />
                 <section className="px-2 main space-left">{children}</section>
             </div>
-            <div className="fixed print:hidden bottom-5 z-50 right-3">
+            <div className="fixed top-5 z-50 right-3">
                 <Flash flash={flash} />
             </div>
         </>
