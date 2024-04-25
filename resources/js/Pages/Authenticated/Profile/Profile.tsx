@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import { IBasePropsPage } from "@/types/common/Common.type";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import ListIcon from "./components/Icons/List";
 import SavedIcon from "./components/Icons/Saved";
 import TaggedIcon from "./components/Icons/Tagged";
 import HeartIcon from "./components/Icons/Heart";
 import CommentIcon from "./components/Icons/Comment";
 import Plus from "./components/Icons/Plus";
+import { CiEdit } from "react-icons/ci";
 import "./style.scss";
 import {
     Tabs,
@@ -15,6 +16,7 @@ import {
     TabsBody,
     Tab,
     TabPanel,
+    Avatar,
 } from "@material-tailwind/react";
 
 type Props = {} & IBasePropsPage<{}>;
@@ -25,7 +27,10 @@ const menu = {
     tagged: "/tagged",
 };
 
-const Profile = (props: Props) => {
+const Profile = ({ config, auth}: Props) => {
+    const [activeTab, setActiveTab] = useState("posts");
+    const [avatarUrl, setAvatarUrl] = useState("");
+    const inputAvatarRef = useRef<HTMLInputElement>(null);
     const menus = useMemo(() => {
         return [
             {
@@ -109,11 +114,17 @@ const Profile = (props: Props) => {
         },
     ];
 
-    const { auth } = props;
-    const [activeTab, setActiveTab] = useState("posts");
-
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
+    };
+    const handleImageUpload = (event) => {
+        router.post(
+            "/profile/change-avatar",
+            { file: event.target.files[0] },
+            {
+                forceFormData: true,
+            },
+        );
     };
 
     return (
@@ -123,10 +134,20 @@ const Profile = (props: Props) => {
                 <div id="profile">
                     <div className="head">
                         <div className="avatar">
-                            <a href="">
-                                <img src="https://i.pravatar.cc/300" alt="" />
-                                ``
-                            </a>
+                            <img src={config.basePath + '/' + auth.user.avatar} alt="" />
+                            <div
+                                className="backrop-edit"
+                                onClick={() => inputAvatarRef.current?.click()}
+                            >
+                                <CiEdit />
+                            </div>
+                            <input
+                                ref={inputAvatarRef}
+                                className="upload-avatar"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                            />
                         </div>
 
                         <div className="info">
@@ -158,7 +179,9 @@ const Profile = (props: Props) => {
 
                     <div className="social-media">
                         <div className="add-btn">
-                            <button className=""><Plus/></button>
+                            <button className="">
+                                <Plus />
+                            </button>
                             <span>New</span>
                         </div>
 
@@ -197,11 +220,15 @@ const Profile = (props: Props) => {
                                                 <div className="media__preview">
                                                     <div className="media__info">
                                                         <div className="like">
-                                                            <span><HeartIcon/></span>
+                                                            <span>
+                                                                <HeartIcon />
+                                                            </span>
                                                             <span>99</span>
                                                         </div>
                                                         <div className="comment">
-                                                            <span><CommentIcon/></span>
+                                                            <span>
+                                                                <CommentIcon />
+                                                            </span>
                                                             <span>9</span>
                                                         </div>
                                                     </div>

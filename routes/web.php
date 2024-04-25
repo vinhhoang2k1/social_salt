@@ -24,11 +24,13 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
     Route::group(['prefix' => '/profile'], function() {
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
+        Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
     });
 
     Route::prefix('post')->group(function() {
         Route::get('create', [PostController::class, 'create']);
     });
+
 
     Route::post('/upload', [UploadController::class, 'upload']);
     Route::post('/upload-multiple', [UploadController::class, 'uploadMultiple']);
