@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Helps\MediaData;
 use App\Helps\ResponseData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\UploadFileRequest;
@@ -23,19 +24,20 @@ class UploadController extends Controller
 
     public function upload(UploadFileRequest $request)
     {
-        // return 'this is upload';
-        // dd($request->file('file'));
         try {
             $path = $this->uploadService->uploadFile('temporary', $request->file('file'));
             $response = (new ResponseData())->setStatus(true)
                 ->setMessage("Upload file thành công")
                 ->setData([
                     'path' => $path,
-                    'full_path' => url('storage' . $path),
+                    'type' => (new MediaData($path))->getFileType()
                 ])
                 ->getBodyResponse();
-
-            return response()->json($response);
+            return redirect()->back()
+                ->with([
+                    'success' => 'Upload success',
+                    'uploads' => $response
+                ]);
         } catch (\Exception $ex) {
             return response()->json($$ex->getMessage());
         }
@@ -46,22 +48,24 @@ class UploadController extends Controller
         try {
             $paths = [];
             $files = $request->file('files');
-            // dd($files);
             foreach ($files as $file) {
                 $path = $this->uploadService->uploadFile('temporary', $file);
                 $paths[] = [
                     'path' => $path,
-                    'full_path' => url('storage' . $path),
+                    'type' => (new MediaData($path))->getFileType()
                 ];
             }
-
 
             $response = (new ResponseData())->setStatus(true)
                 ->setMessage("Upload file thành công")
                 ->setData($paths)
                 ->getBodyResponse();
 
-            return response()->json($response);
+            return redirect()->back()
+                ->with([
+                    'success' => 'Upload success',
+                    'uploads' => $response
+                ]);
         } catch (\Exception $ex) {
             return response()->json($$ex->getMessage());
         }

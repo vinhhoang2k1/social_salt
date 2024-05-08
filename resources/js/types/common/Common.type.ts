@@ -26,6 +26,13 @@ export interface IBasePropsPage<D> {
     auth: {
         user: IResUser
     };
-    data: D
+    response: D
+    uploads?: {
+        data: IFile[]
+    } 
     flash: IFlash
+}
+export interface IFile {
+    path: string,
+    type: 'image' | 'video'
 }

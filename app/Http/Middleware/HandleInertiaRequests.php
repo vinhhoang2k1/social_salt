@@ -38,6 +38,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'response' => fn() => $request->session()->get('response'),
+            'uploads' => fn() => $request->session()->get('uploads'),
             'flash' => [
                 'message' => fn() => $request->session()->get('message'),
                 'success' => fn() => $request->session()->get('success'),
