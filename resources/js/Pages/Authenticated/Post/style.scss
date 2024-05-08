@@ -1,10 +1,19 @@
-@import "../../../../scss/variable.scss" ;
+@import "../../../../scss/variable.scss";
 #post__create {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
-    .content {
+    .upload-media {
+        display: none;
+    }
+    .btn {
+        cursor: pointer;
+        width: max-content;
+        margin: 20px auto 0;
+        text-align: center;
+    }
+    .pre-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         .create-title {
             margin-bottom: 50px;
             font-size: 30px;
@@ -14,11 +23,84 @@
             display: block;
             margin: auto;
         }
-        .select-media {
-            cursor: pointer;
-            width: max-content;
-            margin: 20px auto 0;
-            text-align: center;
+    }
+    .content {
+        .section-media {
+            flex: 4;
+        }
+        .section-caption {
+            width: 0px;
+            border-radius: 10px;
+            box-shadow: 0 10px 100px 50px #e6e6e6;
+            min-height: 90vh;
+            transition: all 0.2s linear;
+            &.show {
+                width: auto;
+                flex: 2;
+                padding: 20px;
+            }
+            .write-caption {
+                position: relative;
+                height: 100%;
+                .author {
+                    .avatar {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        border: 1px solid #dbd8d8;
+                    }
+                }
+                .content-text {
+                    textarea {
+                        border: unset;
+                        height: auto;
+                        width: 100%;
+                        box-shadow: unset;
+                        padding: 0;
+                    }
+                }
+                .cation-action {
+                    position: absolute;
+                    bottom: 20px;
+                    left: 0;
+                    width: 100%;
+                    .back-btn {
+                        background-color: #989898;
+                    }
+                    .share-btn  {
+
+                    }
+                }
+            }
+        }
+    }
+    .edit-media {
+        & > .grid {
+            transition: all 0.1s linear;
+        }
+        .wrap-image {
+            background-color: #e2e2e2a1;
+            &:hover > .remove-btn {
+                transform: scale(1);
+            }
+            .remove-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: #fff;
+                border-radius: 50%;
+                cursor: pointer;
+                transform: scale(0);
+                transition: all 0.1s ease-in;
+            }
+        }
+    }
+    .more-action-media {
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+        .next-to-cation {
+            background-color: #140606;
         }
     }
 }
