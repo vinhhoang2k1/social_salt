@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('post')->group(function() {
         Route::get('create', [PostController::class, 'create']);
+        Route::get('/test', function() {
+            return 'this is data';
+        });
     });
 
 

@@ -1,7 +1,9 @@
+import { fetcher } from "@/Api/Axios";
 import CollapseComponent from "@/Components/Collapse/Collapse";
 import { IConfig, IResUser } from "@/types/common/Common.type";
 import { PageProps } from "@inertiajs/inertia";
 import { usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoShareOutline } from "react-icons/io5";
 type Props = {
@@ -11,6 +13,13 @@ type Props = {
 const Caption = ({ onBack }: Props) => {
     const { basePath } = usePage<PageProps>().props.config as IConfig;
     const { user } = usePage<PageProps>().props.auth as { user: IResUser };
+    useEffect(() => {
+        const fetch = async() => {
+            const data = (await fetcher.get("/post/test"));
+        }
+        fetch();
+    }, [])
+    
     return (
         <div className="write-caption">
             <div className="author flex items-center gap-2">
@@ -24,6 +33,9 @@ const Caption = ({ onBack }: Props) => {
             <div className="content-text mt-5">
                 <textarea placeholder="Write a caption" cols={3} />
             </div>
+            <CollapseComponent label={"Tag friends"}>
+                this is content
+            </CollapseComponent>
             <CollapseComponent label={"Location"}>
                 this is content
             </CollapseComponent>
