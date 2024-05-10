@@ -53,11 +53,13 @@
 
                 button {
                     margin: 0 4px;
-                    background-color: #e7e7e7;
                     padding: 4px 12px;
                     border-radius: 4px;
                     font-weight: 500;
                     font-size: 0.85rem;
+                    &.grey {
+                        background-color: #efefef;
+                    }
                 }
             }
 
@@ -70,8 +72,23 @@
                     padding-right: 24px;
 
                     span {
+                        padding: 0px 4px;
                         font-weight: 500;
                     }
+                }
+
+                button {
+                    background: none;
+                    box-shadow: none;
+                    color: #000;
+                    text-transform: lowercase;
+                    font-size: 1rem;
+                    font-weight: 400;
+                }
+                
+                .modal__body {
+                    width: 10%;
+                    max-height: 80%;
                 }
             }
         }
@@ -129,6 +146,7 @@
                 display: flex;
 
                 .media__item {
+                    padding: 0;
                     position: relative;
                     width: 33.33%;
                     margin: 2px;
