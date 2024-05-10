@@ -1,12 +1,26 @@
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState,  } from "react";
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
-import { IBasePropsPage } from "@/types/common/Common.type";
+import {
+    IResUser,
+    IResFollow,
+    IBasePropsPage,
+} from "@/types/common/Common.type";
 import { Head, router } from "@inertiajs/react";
+import {
+    Button,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    IconButton,
+    Typography,
+    Input,
+} from "@material-tailwind/react";
 import ListIcon from "./components/Icons/List";
 import SavedIcon from "./components/Icons/Saved";
 import TaggedIcon from "./components/Icons/Tagged";
 import HeartIcon from "./components/Icons/Heart";
 import CommentIcon from "./components/Icons/Comment";
+import Setting from "./components/Icons/Setting";
 import Plus from "./components/Icons/Plus";
 import { CiEdit } from "react-icons/ci";
 import "./style.scss";
@@ -19,7 +33,15 @@ import {
     Avatar,
 } from "@material-tailwind/react";
 
-type Props = {} & IBasePropsPage<{}>;
+type Props = {
+    profileData: IResUser;
+} & IBasePropsPage<{}>;
+
+type ModalProps = {
+    heading: string,
+    openLabel: string,
+    // followData: Array<{}>,
+};
 
 const menu = {
     posts: "/",
@@ -27,7 +49,66 @@ const menu = {
     tagged: "/tagged",
 };
 
-const Profile = ({ config, auth}: Props) => {
+export function FollowModal(props: ModalProps) {
+    const {heading, openLabel} = props;
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => setOpen((cur) => !cur);
+
+    return (
+        <section>
+            <Button onClick={handleOpen}>{openLabel}</Button>
+            <Dialog className="modal__body grid p-4" size="md" open={open} handler={handleOpen}>
+                <DialogHeader className="justify-between">
+                    <Typography color="blue-gray" className="mb-1 font-bold">
+                        {heading}
+                    </Typography>
+                    <IconButton
+                        size="sm"
+                        variant="text"
+                        onClick={handleOpen}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            className="h-4 w-4"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </IconButton>
+                </DialogHeader>
+                <DialogBody className="overflow-y-scroll">
+                    <div className="form-group">
+                        <input 
+                            type="text" 
+                            placeholder="Search"
+                            className="w-full p-1 rounded-md"
+                        />
+                    </div>
+                    <ul>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                        <li>Anh Tuan</li>
+                    </ul>
+                </DialogBody>
+            </Dialog>
+        </section>
+    );
+}
+
+const Profile = (props: Props) => {
+    const { config, auth, profileData } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
     const inputAvatarRef = useRef<HTMLInputElement>(null);
@@ -66,50 +147,63 @@ const Profile = ({ config, auth}: Props) => {
         ];
     }, [location.pathname, menu]);
 
-    const posts = [
+    console.log("followers", profileData);
+
+    const postList = [
         {
             group: "POSTS",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 1",
         },
         {
             group: "SAVED",
-            media_path: "https://i.pravatar.cc/300",
+            media_path:
+                "https://videocdn.cdnpk.net/joy/content/video/free/2019-12/large_preview/190915_B_02_HaLong_11.mp4",
+            media_type: 1,
             title: "post 2",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 3",
         },
         {
             group: "POSTS",
-            media_path: "https://i.pravatar.cc/300",
+            media_path:
+                "https://videocdn.cdnpk.net/joy/content/video/free/2019-12/large_preview/190915_B_02_HaLong_11.mp4",
+            media_type: 1,
             title: "post 4",
         },
         {
             group: "SAVED",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 5",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 6",
         },
         {
             group: "POSTS",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 7",
         },
         {
             group: "SAVED",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 8",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
+            media_type: 0,
             title: "post 9",
         },
     ];
@@ -134,7 +228,10 @@ const Profile = ({ config, auth}: Props) => {
                 <div id="profile">
                     <div className="head">
                         <div className="avatar">
-                            <img src={config.basePath + '/' + auth.user.avatar} alt="" />
+                            <img
+                                src={config.basePath + "/" + auth.user.avatar}
+                                alt=""
+                            />
                             <div
                                 className="backrop-edit"
                                 onClick={() => inputAvatarRef.current?.click()}
@@ -155,24 +252,25 @@ const Profile = ({ config, auth}: Props) => {
                                 <h3 className="fullname">
                                     {auth.user.fullname}
                                 </h3>
-                                <button>Edit profile</button>
-                                <button>View archive</button>
+                                <button className="grey">Edit profile</button>
+                                <button className="grey">View archive</button>
+                                <button>
+                                    <Setting />
+                                </button>
                             </div>
 
                             <div className="social">
-                                <h3>
-                                    <span>6</span>posts
-                                </h3>
-                                <button>
-                                    <h3>
-                                        <span>27</span> followers
-                                    </h3>
-                                </button>
-                                <button>
-                                    <h3>
-                                        <span>64</span> following
-                                    </h3>
-                                </button>
+                                <h3> <span>{profileData.posts.length}</span>posts</h3>
+                                <FollowModal
+                                    heading="Followers"
+                                    openLabel={String(profileData.followers.length) + ' followers'}
+                                    // followData=[{}]
+                                />
+                                <FollowModal
+                                    heading="Following"
+                                    openLabel={String(profileData.following.length) + ' following'}
+                                    // followData=[{}]
+                                />
                             </div>
                         </div>
                     </div>
@@ -207,16 +305,29 @@ const Profile = ({ config, auth}: Props) => {
                                 </TabsHeader>
                                 <TabsBody>
                                     <div className="media__container">
-                                        {posts.map((post) => (
+                                        {postList.map((post) => (
                                             <TabPanel
                                                 className="media__item"
                                                 key={post.group}
                                                 value={post.group}
                                             >
-                                                <img
-                                                    src={post.media_path}
-                                                    alt=""
-                                                />
+                                                {/* check media path  */}
+                                                {post.media_type == 0 ? (
+                                                    <img
+                                                        src={post.media_path}
+                                                        alt=""
+                                                    />
+                                                ) : (
+                                                    <video controls>
+                                                        <source
+                                                            src={
+                                                                post.media_path
+                                                            }
+                                                            type="video/mp4"
+                                                        />
+                                                    </video>
+                                                )}
+
                                                 <div className="media__preview">
                                                     <div className="media__info">
                                                         <div className="like">
