@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/test', function() {
             return 'this is data';
         });
+        Route::post('/create', [PostController::class, 'store']);
+
     });
 
 
