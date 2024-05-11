@@ -6,23 +6,17 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model 
+class PostMedia extends Model
 {
     use HasFactory, HasUlids;
 
-    protected $table = 'posts';
+    protected $table = 'post_media';
 
     protected $fillable = [
         'id',
-        'user_id',
-        'content',
-        'location',
-        'mode',
-        'post_type',
-        'st_public'
+        'post_id',
+        'type',
+        'caption',
+        'media_path',
     ];
-
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
 }

@@ -19,21 +19,8 @@ export const STEP = {
 const CreatePost = (props: Props) => {
     const inputAvatarRef = useRef<HTMLInputElement>(null);
     const fileAfterUploaded = props.uploads?.data as IFile[];
-    const [step, setStep] = useState(STEP.caption);
-    const [medias, setMedias] = useState<IFile[]>([
-        {
-            path: "/temporary/2024/05/07/BmSxBk7ws9u61715048427phpDKMCT7.jpg",
-            type: "image",
-        },
-        {
-            path: "/temporary/2024/05/07/vTmqvvXOMOrZ1715048474phpxQEdBX.png",
-            type: "image",
-        },
-        {
-            path: "/temporary/2024/05/07/xdyZb23Z2Kg21715052880phpvMWJ9G.mp4",
-            type: "video",
-        },
-    ]);
+    const [step, setStep] = useState(STEP.upload);
+    const [medias, setMedias] = useState<IFile[]>([]);
     const handleMediaUpload = (event) => {
         router.post(
             "/upload-multiple",
@@ -102,7 +89,10 @@ const CreatePost = (props: Props) => {
                             </div>
                             {step == STEP.caption && (
                                 <div className={`section-caption show`}>
-                                    <Caption onBack={() => setStep(STEP.preivew)} />
+                                    <Caption
+                                        medias={medias}
+                                        onBack={() => setStep(STEP.preivew)}
+                                    />
                                 </div>
                             )}
                             {step != STEP.caption && (

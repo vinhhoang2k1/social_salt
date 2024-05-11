@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('post_media', function (Blueprint $table) {
-            $table->string('type')->nullable()->after('post_id');
-            $table->string('cation')->nullable()->after('type');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->enum('st_public', [0, 1, 2])->default(1)->comment('0: Follower, 1: All, 2: Private')->after('post_type');
         });
     }
 
@@ -26,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('post_media', function (Blueprint $table) {
-            $table->dropColumn('type');
-            $table->dropColumn('cation');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('st_public');
         });
     }
 };

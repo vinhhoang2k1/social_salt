@@ -8,7 +8,7 @@ class UserService {
         $this->uploadService =  $uploadService;
     }
     public function deleteOldAvatar($path) {
-        $this->uploadService->deleleFile([$path]);
+        $this->uploadService->deleleFile($path);
     }
     public function saveAvatarFile($file) {   
         $data['file'] = $this->uploadService->forceUpload('avatar', $file);
