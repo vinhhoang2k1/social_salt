@@ -37,4 +37,8 @@ class PostController extends Controller
             throw 'Error';
         }    
     }
+    public function view() {
+        
+        return Inertia::render('Authenticated/Post/ViewPost');
+    }
 }
