@@ -30,8 +30,11 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getFollowing() {
+    public function getFollowing($id = null) {
         $userId = Auth::user()->id; 
+        if ($id) {
+            $userId = $id;
+        }
         $following = $this->userService->getFollowing($userId);
         return response()->json([
             'success' => true,
@@ -40,13 +43,31 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getFollowers() {
+    public function getFollowers($id) {
         $userId = Auth::user()->id; 
+        if ($id) {
+            $userId = $id;
+        }
         $followers = $this->userService->getFollowers($userId);
         return response()->json([
             'success' => true,
             'message' => 'Get followers suceess',
             'follows' => $followers,
+        ]);
+    }
+
+    public function addFollow($id) {
+        $authorId = Auth::user()->id;
+        $newFollow = $this->userService->follow($authorId, $id);
+        if ($newFollow) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Follow successfully',
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Follow failure',
         ]);
     }
 

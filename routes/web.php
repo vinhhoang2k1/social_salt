@@ -25,8 +25,9 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
     Route::group(['prefix' => '/profile'], function () {
         Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
-        Route::get('/following', [ProfileController::class, 'getFollowing']);
-        Route::get('/followers', [ProfileController::class, 'getFollowers']);
+        Route::get('/following/{id}', [ProfileController::class, 'getFollowing']);
+        Route::get('/followers/{id}', [ProfileController::class, 'getFollowers']);
+        Route::get('/follow/{id}', [ProfileController::class, 'addFollow']);
         Route::get('/{id}', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
     });

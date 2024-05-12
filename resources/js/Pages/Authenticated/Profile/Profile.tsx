@@ -63,7 +63,7 @@ export function FollowModal(props: ModalProps) {
             setFollows(data.follows);
         };
         fetch();
-    }, []);
+    }, [follows]);
 
 
     const handleOpen = () => setOpen((cur) => !cur);
@@ -109,7 +109,7 @@ export function FollowModal(props: ModalProps) {
                     <ul className="mt-4">
                         {follows?.map((item, key) => (
                             <div key={key} className="follow-item flex items-center my-2">
-                                <a href={'/profile/'+item.id} className="flex items-center">
+                                <a href={`/profile/${item.id}`} className="flex items-center">
                                     <img 
                                         style={{
                                             width: '48px',
@@ -134,6 +134,7 @@ const Profile = (props: Props) => {
     const {config, auth, profileData } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
+    const [isFollowing, setFollowing] = useState(false);
     const inputAvatarRef = useRef<HTMLInputElement>(null);
     const menus = useMemo(() => {
         return [
@@ -217,8 +218,15 @@ const Profile = (props: Props) => {
         },
     ];
 
-    console.log(profileData);
-    
+    const handleFollow = () => {
+        const fetch = async () => {
+            const { data } = await fetcher.get(`/profile/follow/${auth.user.id}`);
+            if (data.success == true) {
+                setFollowing(true);
+            }
+        };
+        fetch();
+    }
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
@@ -264,11 +272,19 @@ const Profile = (props: Props) => {
                                 <h3 className="fullname">
                                     {profileData.fullname}
                                 </h3>
-                                <a href="/" className="grey">
+
+                                {profileData.id == auth.user.id ? (
+                                    <a href="/" className="grey">Edit profile</a>
+                                ) : (
+                                    <button className="blue-sky" onClick={handleFollow}>
+                                         {isFollowing ? "Following" : "Follow"}
+                                    </button>
+                                )}
+                                {/* <a href="/" className="grey">
                                     {profileData.id == auth.user.id
                                         ? "Edit profile"
                                         : "Follow"}
-                                </a>
+                                </a> */}
                                 <a href="/" className="grey">
                                     View archive
                                 </a>
@@ -284,7 +300,7 @@ const Profile = (props: Props) => {
                                 </h3>
                                 <FollowModal
                                     config={config}
-                                    apiPath="/profile/followers"
+                                    apiPath={`/profile/followers/${profileData.id}`}
                                     heading="Followers"
                                     openLabel={
                                         String(profileData.followers.length) +
@@ -293,7 +309,7 @@ const Profile = (props: Props) => {
                                 />
                                 <FollowModal
                                     config={config}
-                                    apiPath="/profile/following"
+                                    apiPath={`/profile/following/${profileData.id}`}
                                     heading="Following"
                                     openLabel={
                                         String(profileData.following.length) +
@@ -315,9 +331,9 @@ const Profile = (props: Props) => {
                         <div className="media-list">
                             <Tabs value="POSTS">
                                 <TabsHeader>
-                                    {menus.map((menu) => (
+                                    {menus.map((menu, key) => (
                                         <Tab
-                                            key={menu.label}
+                                            key={key}
                                             value={menu.label}
                                             className="label"
                                         >
@@ -334,10 +350,10 @@ const Profile = (props: Props) => {
                                 </TabsHeader>
                                 <TabsBody>
                                     <div className="media__container">
-                                        {postList.map((post) => (
+                                        {postList.map((post, key) => (
                                             <TabPanel
                                                 className="media__item"
-                                                key={post.group}
+                                                key={key}
                                                 value={post.group}
                                             >
                                                 <img
