@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UpdateAvatarRequest;
 use App\Models\Follow;
-use App\Models\Post;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -28,6 +27,30 @@ class ProfileController extends Controller
         $profileData = User::with('posts', 'followers', 'following')->find($userId);
         return Inertia::render('Authenticated/Profile/Profile', [
             'profileData' => $profileData,
+        ]);
+    }
+
+    public function getFollowing() {
+        $userId = Auth::user()->id; 
+        $following = '';
+        return response()->json([
+            'success' => true,
+            'message' => 'Get following suceess',
+            'following' => $following,
+        ]);
+    }
+
+    public function getFollowers() {
+        $userId = Auth::user()->id; 
+        $followers = User::whereIn('id', function ($query) use ($userId) {
+            $query->select('following_user_id')
+                ->from('follows')
+                ->where('followed_user_id', $userId);
+        })->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Get followers suceess',
+            'followers' => $followers,
         ]);
     }
 

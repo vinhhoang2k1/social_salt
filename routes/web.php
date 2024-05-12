@@ -25,6 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => '/profile'], function() {
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
+        Route::get('/following', [ProfileController::class, 'getFollowing']);
+        Route::get('/followers', [ProfileController::class, 'getFollowers']);
     });
 
     Route::prefix('post')->group(function() {

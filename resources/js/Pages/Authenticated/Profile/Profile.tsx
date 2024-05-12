@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState,  } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import {
     IResUser,
@@ -15,6 +15,7 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import { fetcher } from "@/Api/Axios";
 import ListIcon from "./components/Icons/List";
 import SavedIcon from "./components/Icons/Saved";
 import TaggedIcon from "./components/Icons/Tagged";
@@ -38,9 +39,9 @@ type Props = {
 } & IBasePropsPage<{}>;
 
 type ModalProps = {
-    heading: string,
-    openLabel: string,
-    // followData: Array<{}>,
+    heading: string;
+    openLabel: string;
+    followData: Array<IResUser>,
 };
 
 const menu = {
@@ -50,7 +51,7 @@ const menu = {
 };
 
 export function FollowModal(props: ModalProps) {
-    const {heading, openLabel} = props;
+    const { heading, openLabel, followData } = props;
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen((cur) => !cur);
@@ -58,16 +59,17 @@ export function FollowModal(props: ModalProps) {
     return (
         <section>
             <Button onClick={handleOpen}>{openLabel}</Button>
-            <Dialog className="modal__body grid p-4" size="md" open={open} handler={handleOpen}>
+            <Dialog
+                className="modal__body grid p-4"
+                size="md"
+                open={open}
+                handler={handleOpen}
+            >
                 <DialogHeader className="justify-between">
                     <Typography color="blue-gray" className="mb-1 font-bold">
                         {heading}
                     </Typography>
-                    <IconButton
-                        size="sm"
-                        variant="text"
-                        onClick={handleOpen}
-                    >
+                    <IconButton size="sm" variant="text" onClick={handleOpen}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -86,20 +88,18 @@ export function FollowModal(props: ModalProps) {
                 </DialogHeader>
                 <DialogBody className="overflow-y-scroll">
                     <div className="form-group">
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             placeholder="Search"
-                            className="w-full p-1 rounded-md"
+                            className="w-full rounded-md p-1"
                         />
                     </div>
                     <ul>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
+                        {followData.map(item => (
+                            <>
+                                <h2>{item.fullname}</h2>
+                            </>
+                        ))}
                     </ul>
                 </DialogBody>
             </Dialog>
@@ -108,7 +108,8 @@ export function FollowModal(props: ModalProps) {
 }
 
 const Profile = (props: Props) => {
-    const { config, auth, profileData } = props;
+    const [followers, setFollowers] = useState([]);
+    const {config, auth, profileData } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
     const inputAvatarRef = useRef<HTMLInputElement>(null);
@@ -147,7 +148,14 @@ const Profile = (props: Props) => {
         ];
     }, [location.pathname, menu]);
 
-    console.log("followers", profileData);
+    console.log('state', followers);
+    useEffect(() => {
+        const fetch = async () => {
+            const { data } = await fetcher.get("/profile/followers");
+            setFollowers(data.followers);
+        };
+        fetch();
+    }, []);
 
     const postList = [
         {
@@ -260,16 +268,25 @@ const Profile = (props: Props) => {
                             </div>
 
                             <div className="social">
-                                <h3> <span>{profileData.posts.length}</span>posts</h3>
+                                <h3>
+                                    {" "}
+                                    <span>{profileData.posts.length}</span>posts
+                                </h3>
                                 <FollowModal
                                     heading="Followers"
-                                    openLabel={String(profileData.followers.length) + ' followers'}
-                                    // followData=[{}]
+                                    openLabel={
+                                        String(profileData.followers.length) +
+                                        " followers"
+                                    }
+                                    followData={followers}
                                 />
                                 <FollowModal
                                     heading="Following"
-                                    openLabel={String(profileData.following.length) + ' following'}
-                                    // followData=[{}]
+                                    openLabel={
+                                        String(profileData.following.length) +
+                                        " following"
+                                    }
+                                    followData={[]}
                                 />
                             </div>
                         </div>
@@ -311,7 +328,6 @@ const Profile = (props: Props) => {
                                                 key={post.group}
                                                 value={post.group}
                                             >
-                                                {/* check media path  */}
                                                 {post.media_type == 0 ? (
                                                     <img
                                                         src={post.media_path}
