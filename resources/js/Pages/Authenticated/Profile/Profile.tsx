@@ -1,9 +1,10 @@
-import React, { useMemo, useRef, useState,  } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import {
     IResUser,
     IResFollow,
     IBasePropsPage,
+    IConfig,
 } from "@/types/common/Common.type";
 import { Head, router } from "@inertiajs/react";
 import {
@@ -15,6 +16,7 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import { fetcher } from "@/Api/Axios";
 import ListIcon from "./components/Icons/List";
 import SavedIcon from "./components/Icons/Saved";
 import TaggedIcon from "./components/Icons/Tagged";
@@ -38,10 +40,11 @@ type Props = {
 } & IBasePropsPage<{}>;
 
 type ModalProps = {
-    heading: string,
-    openLabel: string,
-    // followData: Array<{}>,
-};
+    config: IConfig;
+    heading: string;
+    openLabel: string;
+    apiPath: string;
+}
 
 const menu = {
     posts: "/",
@@ -50,24 +53,35 @@ const menu = {
 };
 
 export function FollowModal(props: ModalProps) {
-    const {heading, openLabel} = props;
+    const [follows, setFollows] = useState<IResUser[]>([]);
+    const {config, heading, openLabel, apiPath } = props;
     const [open, setOpen] = React.useState(false);
+
+    useEffect(() => {
+        const fetch = async () => {
+            const { data } = await fetcher.get(apiPath);
+            setFollows(data.follows);
+        };
+        fetch();
+    }, [follows]);
+
 
     const handleOpen = () => setOpen((cur) => !cur);
 
     return (
-        <section>
+        <section className="modal">
             <Button onClick={handleOpen}>{openLabel}</Button>
-            <Dialog className="modal__body grid p-4" size="md" open={open} handler={handleOpen}>
+            <Dialog
+                className="modal__body grid p-4"
+                size="md"
+                open={open}
+                handler={handleOpen}
+            >
                 <DialogHeader className="justify-between">
                     <Typography color="blue-gray" className="mb-1 font-bold">
                         {heading}
                     </Typography>
-                    <IconButton
-                        size="sm"
-                        variant="text"
-                        onClick={handleOpen}
-                    >
+                    <IconButton size="sm" variant="text" onClick={handleOpen}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -86,20 +100,29 @@ export function FollowModal(props: ModalProps) {
                 </DialogHeader>
                 <DialogBody className="overflow-y-scroll">
                     <div className="form-group">
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             placeholder="Search"
-                            className="w-full p-1 rounded-md"
+                            className="w-full rounded-md p-1"
                         />
                     </div>
-                    <ul>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
-                        <li>Anh Tuan</li>
+                    <ul className="mt-4">
+                        {follows?.map((item, key) => (
+                            <div key={key} className="follow-item flex items-center my-2">
+                                <a href={`/profile/${item.id}`} className="flex items-center">
+                                    <img 
+                                        style={{
+                                            width: '48px',
+                                            height: '48px',
+                                            borderRadius: '50%'
+                                        }}
+                                        src={config.basePath + "/" + item.avatar} 
+                                        alt={item.fullname} 
+                                    />
+                                    <span className="px-2">{item.fullname}</span>
+                                </a>
+                            </div>
+                        ))}
                     </ul>
                 </DialogBody>
             </Dialog>
@@ -108,9 +131,10 @@ export function FollowModal(props: ModalProps) {
 }
 
 const Profile = (props: Props) => {
-    const { config, auth, profileData } = props;
+    const {config, auth, profileData } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
+    const [isFollowing, setFollowing] = useState(false);
     const inputAvatarRef = useRef<HTMLInputElement>(null);
     const menus = useMemo(() => {
         return [
@@ -146,67 +170,63 @@ const Profile = (props: Props) => {
             },
         ];
     }, [location.pathname, menu]);
-
-    console.log("followers", profileData);
-
     const postList = [
         {
             group: "POSTS",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 1",
         },
         {
             group: "SAVED",
-            media_path:
-                "https://videocdn.cdnpk.net/joy/content/video/free/2019-12/large_preview/190915_B_02_HaLong_11.mp4",
-            media_type: 1,
+            media_path: "https://i.pravatar.cc/300",
             title: "post 2",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 3",
         },
         {
             group: "POSTS",
-            media_path:
-                "https://videocdn.cdnpk.net/joy/content/video/free/2019-12/large_preview/190915_B_02_HaLong_11.mp4",
-            media_type: 1,
+            media_path: "https://i.pravatar.cc/300",
             title: "post 4",
         },
         {
             group: "SAVED",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 5",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 6",
         },
         {
             group: "POSTS",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 7",
         },
         {
             group: "SAVED",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 8",
         },
         {
             group: "TAGGED",
             media_path: "https://i.pravatar.cc/300",
-            media_type: 0,
             title: "post 9",
         },
     ];
+
+    const handleFollow = () => {
+        const fetch = async () => {
+            const { data } = await fetcher.get(`/profile/follow/${auth.user.id}`);
+            if (data.success == true) {
+                setFollowing(true);
+            }
+        };
+        fetch();
+    }
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
@@ -229,7 +249,7 @@ const Profile = (props: Props) => {
                     <div className="head">
                         <div className="avatar">
                             <img
-                                src={config.basePath + "/" + auth.user.avatar}
+                                src={config.basePath + "/" + profileData.avatar}
                                 alt=""
                             />
                             <div
@@ -250,26 +270,51 @@ const Profile = (props: Props) => {
                         <div className="info">
                             <div className="action">
                                 <h3 className="fullname">
-                                    {auth.user.fullname}
+                                    {profileData.fullname}
                                 </h3>
-                                <button className="grey">Edit profile</button>
-                                <button className="grey">View archive</button>
+
+                                {profileData.id == auth.user.id ? (
+                                    <a href="/" className="grey">Edit profile</a>
+                                ) : (
+                                    <button className="blue-sky" onClick={handleFollow}>
+                                         {isFollowing ? "Following" : "Follow"}
+                                    </button>
+                                )}
+                                {/* <a href="/" className="grey">
+                                    {profileData.id == auth.user.id
+                                        ? "Edit profile"
+                                        : "Follow"}
+                                </a> */}
+                                <a href="/" className="grey">
+                                    View archive
+                                </a>
                                 <button>
                                     <Setting />
                                 </button>
                             </div>
 
                             <div className="social">
-                                <h3> <span>{profileData.posts.length}</span>posts</h3>
+                                <h3>
+                                    {" "}
+                                    <span>{profileData.posts.length}</span>posts
+                                </h3>
                                 <FollowModal
+                                    config={config}
+                                    apiPath={`/profile/followers/${profileData.id}`}
                                     heading="Followers"
-                                    openLabel={String(profileData.followers.length) + ' followers'}
-                                    // followData=[{}]
+                                    openLabel={
+                                        String(profileData.followers.length) +
+                                        " followers"
+                                    }
                                 />
                                 <FollowModal
+                                    config={config}
+                                    apiPath={`/profile/following/${profileData.id}`}
                                     heading="Following"
-                                    openLabel={String(profileData.following.length) + ' following'}
-                                    // followData=[{}]
+                                    openLabel={
+                                        String(profileData.following.length) +
+                                        " following"
+                                    }
                                 />
                             </div>
                         </div>
@@ -286,9 +331,9 @@ const Profile = (props: Props) => {
                         <div className="media-list">
                             <Tabs value="POSTS">
                                 <TabsHeader>
-                                    {menus.map((menu) => (
+                                    {menus.map((menu, key) => (
                                         <Tab
-                                            key={menu.label}
+                                            key={key}
                                             value={menu.label}
                                             className="label"
                                         >
@@ -305,42 +350,26 @@ const Profile = (props: Props) => {
                                 </TabsHeader>
                                 <TabsBody>
                                     <div className="media__container">
-                                        {postList.map((post) => (
+                                        {postList.map((post, key) => (
                                             <TabPanel
                                                 className="media__item"
-                                                key={post.group}
+                                                key={key}
                                                 value={post.group}
                                             >
-                                                {/* check media path  */}
-                                                {post.media_type == 0 ? (
-                                                    <img
-                                                        src={post.media_path}
-                                                        alt=""
-                                                    />
-                                                ) : (
-                                                    <video controls>
-                                                        <source
-                                                            src={
-                                                                post.media_path
-                                                            }
-                                                            type="video/mp4"
-                                                        />
-                                                    </video>
-                                                )}
-
+                                                <img
+                                                    src={post.media_path}
+                                                    alt=""
+                                                />
+                                               
                                                 <div className="media__preview">
                                                     <div className="media__info">
                                                         <div className="like">
-                                                            <span>
-                                                                <HeartIcon />
-                                                            </span>
-                                                            <span>99</span>
+                                                            <HeartIcon />
+                                                            <span>{Math.floor(Math.random() * 100) + 1}</span>
                                                         </div>
                                                         <div className="comment">
-                                                            <span>
-                                                                <CommentIcon />
-                                                            </span>
-                                                            <span>9</span>
+                                                            <CommentIcon />
+                                                            <span>{Math.floor(Math.random() * 40) + 1}</span>
                                                         </div>
                                                     </div>
                                                 </div>
