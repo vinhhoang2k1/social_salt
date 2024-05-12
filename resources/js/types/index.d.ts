@@ -18,7 +18,7 @@ interface SoftDelete {
 }
 
 export interface ICreateUser {
-  name: string;
+  fullname: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -26,8 +26,12 @@ export interface ICreateUser {
 }
 
 export interface IUser extends ICreateUser, BasicModel, SoftDelete {
-  email_verified_at: string;
-  business_id: string;
+    
+    avatar: string
+    bio: string | null,
+    gender: string | null,
+    date_of_birth: string | null,
+    user_status_id: string | null
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>,> = T & {

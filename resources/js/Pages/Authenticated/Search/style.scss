@@ -1,0 +1,92 @@
+#search {
+    .head {
+        background-color: #fff;
+        position: fixed;
+        top: 0;
+        left: 210px;
+        width: 100%;
+    }
+    .input-search {
+        padding: 10px 20px 10px 0;
+        border-bottom: 1px solid #c9c9c9c9;
+        > input {
+            border-radius: 5px;
+            width: 300px;
+        }
+    }
+    .search-content {
+        margin-top: 120px;
+        height: max-content;
+        .history {
+            margin-top: 10px;
+            width: 300px;
+            .label {
+                font-weight: bold;
+            }
+            .btn-clear {
+                cursor: pointer;
+                color: #0020b0c9;
+            }
+
+            &__list {
+            }
+            &__item {
+                .result__item {
+                    box-shadow: unset;
+                    padding: 0;
+                    margin-top: 20px;
+                    &:hover {
+                        box-shadow: unset;
+                    }
+                    .avatar {
+                        img {
+                            width: 50px;
+                            height: 50px;
+                        }
+                    }
+                    .info {
+                        .name {
+                            margin-top: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .result {
+            &__item {
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                box-shadow:
+                    rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+                    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+                transition: all 0.3s ease-in;
+                &:hover {
+                    // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                    box-shadow:
+                        rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+                        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+                        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+                }
+                .avatar {
+                    img {
+                        width: 100px;
+                        height: 100px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+                }
+                .info {
+                    .name {
+                        margin-top: 20px;
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    .talk {
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+    }
+}

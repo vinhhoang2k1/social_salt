@@ -4,6 +4,7 @@ import CommentIcon from "@/Components/Icons/Comment";
 import ShareIcon from "@/Components/Icons/Share";
 import InputComment from "./InputComment";
 import Slide from "./Slide";
+import { router } from "@inertiajs/react";
 type Props = {};
 
 const PortItem = (props: Props) => {
@@ -61,8 +62,8 @@ const PortItem = (props: Props) => {
                         </span>
                     ))}
             </div>
-            <div className="post__item-all-comments">View all 103 comments</div>
-            <div className="post__item-input-comment">
+            <div className="post__item-all-comments" onClick={() => router.get('/post/view/asdfasdf')}>View all 103 comments</div>
+            <div className="input-comment">
                 <InputComment onClickPost={(value) => {console.log('value', value);
                 }}/>
             </div>

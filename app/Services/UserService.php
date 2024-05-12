@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\User;
+
 class UserService {
     private $uploadService;
     public function __construct(UploadService $uploadService)
@@ -16,6 +18,14 @@ class UserService {
             return $data['file'];
         }else {
             return '';
+        }
+    }
+    public function findUserByName(string $userName) {
+        $users = User::query();
+        if(isset($userName)) {
+            $users->where('fullname', 'LIKE', "%" . $userName . "%");
+            $result = $users->orderBy('fullname')->paginate(30);
+            return $result->getCollection();
         }
     }
 }
