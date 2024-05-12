@@ -7,8 +7,8 @@
         
         .avatar {
             // width: 30%;
-            width: 20%;
-            height: 20%;
+            width: 140px;
+            height: 140px;
             margin-right: 50px;
             cursor: pointer;
             position: relative;
@@ -52,12 +52,13 @@
                     padding-right: 32px;
                 }
 
-                button {
+                a {
                     margin: 0 4px;
                     padding: 4px 12px;
                     border-radius: 4px;
                     font-weight: 500;
                     font-size: 0.85rem;
+                    cursor: pointer;
                     &.grey {
                         background-color: #efefef;
                     }
@@ -85,14 +86,10 @@
                     text-transform: lowercase;
                     font-size: 1rem;
                     font-weight: 400;
-                }
-                
-                .modal__body {
-                    width: 10%;
-                    max-height: 80%;
-                }
+                }                
             }
         }
+
     }
 
     .social-media {

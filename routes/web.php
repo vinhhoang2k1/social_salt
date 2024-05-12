@@ -24,10 +24,11 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
     Route::group(['prefix' => '/profile'], function () {
-        Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
         Route::get('/following', [ProfileController::class, 'getFollowing']);
         Route::get('/followers', [ProfileController::class, 'getFollowers']);
+        Route::get('/{id}', [ProfileController::class, 'getUserProfile'])->name('profile');
+        Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
     });
 
     Route::prefix('post')->group(function () {

@@ -32,25 +32,21 @@ class ProfileController extends Controller
 
     public function getFollowing() {
         $userId = Auth::user()->id; 
-        $following = '';
+        $following = $this->userService->getFollowing($userId);
         return response()->json([
             'success' => true,
             'message' => 'Get following suceess',
-            'following' => $following,
+            'follows' => $following,
         ]);
     }
 
     public function getFollowers() {
         $userId = Auth::user()->id; 
-        $followers = User::whereIn('id', function ($query) use ($userId) {
-            $query->select('following_user_id')
-                ->from('follows')
-                ->where('followed_user_id', $userId);
-        })->get();
+        $followers = $this->userService->getFollowers($userId);
         return response()->json([
             'success' => true,
             'message' => 'Get followers suceess',
-            'followers' => $followers,
+            'follows' => $followers,
         ]);
     }
 

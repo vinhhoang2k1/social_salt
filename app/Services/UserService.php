@@ -28,4 +28,24 @@ class UserService {
             return $result->getCollection();
         }
     }
+
+    public function getFollowers(string $userId) {
+        $followers = User::whereIn('id', function ($query) use ($userId) {
+            $query->select('following_user_id')
+                ->from('follows')
+                ->where('followed_user_id', $userId);
+        })->get();
+        return $followers;
+    }
+
+
+    public function getFollowing(string $userId) {
+        $followers = User::whereIn('id', function ($query) use ($userId) {
+            $query->select('followed_user_id')
+                ->from('follows')
+                ->where('following_user_id', $userId);
+        })->get();
+        return $followers;
+    }
+
 }
