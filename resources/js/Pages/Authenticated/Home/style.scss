@@ -158,37 +158,6 @@
                 color: #a4a4a4;
 
             }
-            &-input-comment {
-                position: relative;
-                font-size: 12px;
-                display: flex;
-                align-items: centerfkjh;
-                &::after {
-                    content: "";
-                    position: absolute;
-                    width: 100%;
-                    height: 1px;
-                    left: 0;
-                    bottom: -10px;
-                    background-color: #c9c9c9;
-                }
-                .input-cmt {
-                    border: unset;
-                    padding: 0;
-                    flex: 1;
-                    font-size: 12px;
-                    &:focus {
-                        border: unset;
-                        box-shadow: unset;
-                    }
-                }
-                .submit-cmt {
-                    font-weight: bold;
-                    color: #00458a;
-                    cursor: pointer;
-                }
-                
-            }
         }
     }
 }

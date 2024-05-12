@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadService
 {
-    public function upload($file, $directory = 'temporary') {
+    public function upload($file, $directory = 'temporary')
+    {
 
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory);
@@ -23,10 +24,11 @@ class UploadService
         return $path;
     }
 
-    public function move($from, $folder) {
+    public function move($from, $folder)
+    {
 
         if (!Storage::exists($from)) {
-             throw new \Exception('Không tìm thấy tệp tin');
+            throw new \Exception('Không tìm thấy tệp tin');
         }
 
         if (!Storage::exists($folder)) {
@@ -40,7 +42,8 @@ class UploadService
         return $to;
     }
 
-    public function delete(array $files) {
+    public function delete(array $files)
+    {
         foreach ($files as $file) {
             if (Storage::exists($file)) {
                 Storage::delete($file);
@@ -48,36 +51,39 @@ class UploadService
         }
     }
 
-    public function uploadFile($folder = 'temporary', $file) {
+    public function uploadFile($folder = 'temporary', $file)
+    {
         if ($folder === 'temporary') {
-            $folder = '/'. 'temporary' . '/' . now()->format('Y/m/d');
+            $folder = '/' . 'temporary' . '/' . now()->format('Y/m/d');
         }
 
         if (!Storage::disk(config('constants.disk_default'))->exists($folder)) {
             Storage::disk(config('constants.disk_default'))->makeDirectory($folder);
         }
 
-        $fileName = \Illuminate\Support\Str::random(12) . time() . $file->getBasename() .'.' . $file->getClientOriginalExtension();
+        $fileName = \Illuminate\Support\Str::random(12) . time() . $file->getBasename() . '.' . $file->getClientOriginalExtension();
 
         Storage::disk(config('constants.disk_default'))->putFileAs($folder, $file, $fileName);
 
         return $folder . '/' . $fileName;
     }
 
-    public function forceUpload($folder, $file) {
+    public function forceUpload($folder, $file)
+    {
 
         if (!Storage::disk(config('constants.disk_default'))->exists($folder)) {
             Storage::disk(config('constants.disk_default'))->makeDirectory($folder);
         }
 
-        $fileName = \Illuminate\Support\Str::random(12) . time() . $file->getBasename() .'.' . $file->getClientOriginalExtension();
+        $fileName = \Illuminate\Support\Str::random(12) . time() . $file->getBasename() . '.' . $file->getClientOriginalExtension();
 
         Storage::disk(config('constants.disk_default'))->putFileAs($folder, $file, $fileName);
 
         return $folder . '/' . $fileName;
     }
 
-    public function realUpload(string $folder, string $file = null, array $option = []) {
+    public function realUpload(string $folder, string $file = null, array $option = [])
+    {
 
         if (empty($file)) {
             return '';
@@ -95,23 +101,25 @@ class UploadService
         return $path;
     }
 
-    public function getUploadFolder(string $folder, array $option = []) {
+    public function getUploadFolder(string $folder, array $option = [])
+    {
         return $folder . implode('-', $option);
     }
 
-    public function deleleFile(array $del) {
-        foreach ($del as $item) {
-            if (Storage::disk(config('constants.disk_default'))->exists($item)) {
-                Storage::disk(config('constants.disk_default'))->delete($item);
-            }
+    public function deleleFile(string $path)
+    {
+        if (Storage::disk(config('constants.disk_default'))->exists($path)) {
+            Storage::disk(config('constants.disk_default'))->delete($path);
         }
     }
 
-    public function deleteDirectory($folder) {
+    public function deleteDirectory($folder)
+    {
         Storage::disk(config('constants.disk_default'))->deleteDirectory($folder);
     }
 
-    public function checkIsExists($file, $folder) {
+    public function checkIsExists($file, $folder)
+    {
 
         $newFile = $folder . '/' . basename($file);
         if (!Storage::disk(config('constants.disk_default'))->exists($newFile)) {
@@ -121,18 +129,19 @@ class UploadService
         return true;
     }
 
-    public function handleUpdateFile($new, $odd, $folder) {
+    public function handleUpdateFile($new, $odd, $folder)
+    {
 
         $result = '';
         if ($new != $odd && !empty($odd)) {
 
             $result = $this->realUpload($folder, $new);
-//            $this->deleleFile([$odd]);
+            //            $this->deleleFile([$odd]);
         }
 
-//        if (empty($new) && !empty($odd)) {
-//            $this->deleleFile([$odd]);
-//        }
+        //        if (empty($new) && !empty($odd)) {
+        //            $this->deleleFile([$odd]);
+        //        }
 
         if (!empty($new) && empty($odd)) {
             $result = $this->realUpload($folder, $new);
@@ -145,13 +154,15 @@ class UploadService
         return $result;
     }
 
-    public function handleDeleteUpdateFile ($new, $odd) {
+    public function handleDeleteUpdateFile($new, $odd)
+    {
         if ($new != $odd && !empty($odd)) {
             $this->deleleFile([$odd]);
         }
     }
 
-    public function getFileSave($new, $folder) {
+    public function getFileSave($new, $folder)
+    {
 
         if ($this->checkIsExists($new, $folder)) {
             return $new;
@@ -160,7 +171,8 @@ class UploadService
         return $this->realUpload($folder, $new);
     }
 
-    public function moveFile($from, $to) {
+    public function moveFile($from, $to)
+    {
         if (!Storage::disk(config('constants.disk_default'))->exists($from)) {
             throw new \Exception("Không tìm thấy tệp tin");
         }

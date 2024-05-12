@@ -59,6 +59,25 @@
                         padding: 0;
                     }
                 }
+                .accessbility-item {
+                    .media {
+                        display: inline-block;
+                        width: 80px;
+                        height: 80px;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .caption {
+                        width: 100%;
+                        border: unset;
+                        box-shadow: unset;
+                        border-bottom: 1px solid #999;
+                    }
+                }
+                .setting-item {
+                }
                 .cation-action {
                     position: absolute;
                     bottom: 20px;
@@ -67,8 +86,7 @@
                     .back-btn {
                         background-color: #989898;
                     }
-                    .share-btn  {
-
+                    .share-btn {
                     }
                 }
             }
@@ -101,6 +119,108 @@
         right: 50px;
         .next-to-cation {
             background-color: #140606;
+        }
+    }
+}
+.post__view-dialog {
+    --height: 90vh;
+    height: var(--height);
+    border-radius: unset;
+    min-width: 60vw;
+    & > div {
+        padding: 0;
+        height: 100%;
+    }
+    #post__view {
+        height: 100%;
+        .show-media {
+            flex: 4;
+            video {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        .content {
+            flex: 3;
+            .show-info {
+                gap: 10px;
+                .author-avatar {
+                    width: 30px;
+                    height: 30px;
+                }
+                .origin {
+                    flex-wrap: wrap;
+                    .author-name {
+                        font-weight: bold;
+                    }
+                }
+            }
+            .author {
+                font-size: 14px;
+                padding: 10px;
+                border-bottom: 1px solid #c9c9c9;
+            }
+            .comment {
+                padding: 0 10px 10px 10px;
+                font-size: 14px;
+                height: calc(var(--height) - 108px - 51px);
+                overflow-y: auto;
+                &::-webkit-scrollbar {
+                    width: 0px;
+                }
+                .caption {
+                    font-size: 12px;
+                }
+                .author-caption {
+                    margin-top: 10px;
+                }
+                .comment-item {
+                    margin-top: 10px;
+                    .infor {
+                    }
+                    .action-like {
+                        cursor: pointer;
+                    }
+                    .action {
+                        margin-left: 40px;
+                        font-size: 10px;
+                        font-weight: bold;
+                        .reply {
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .collapse-item {
+                    border: unset;
+                    margin-top: 0;
+                    .label {
+                        font-size: 11px;
+                        margin-left: 40px;
+                    }
+                }
+                .list-reply {
+                    margin-left: 30px;
+                }
+            }
+            .action-post {
+                font-size: 14px;
+                padding: 10px;
+                border-top: 1px solid #c9c9c9;
+                .liked,
+                .posted {
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                .posted {
+                    font-size: 10px;
+                }
+                .input-comment {
+                    &::after {
+                        bottom: unset;
+                        top: 0px;
+                    }
+                }
+            }
         }
     }
 }
