@@ -30,17 +30,33 @@ class AuthenticatedSessionController extends Controller
         return redirect(route('home'));
     }
 
-     /**
+    public function adminCreate(): Response
+    {
+        return Inertia::render('Admin/Login/index');
+    }
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function adminStore(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+        $request->session()->regenerate();
+        return redirect(route('admin'));
+    }
+
+
+    /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request)
-    {   
+    {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect(route('login'))->with('message','See you again 👋');
+        return redirect(route('login'))->with('message', 'See you again 👋');
     }
 }

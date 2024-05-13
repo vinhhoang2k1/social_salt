@@ -1,0 +1,48 @@
+.authenticate-layout {
+    display: flex;
+    .side-bar-left {
+        position: fixed;
+        padding: 30px 10px 30px 10px;
+        border-right: 1px solid #d9d9d9;
+        height: 100vh;
+        background-color: #fff;
+        width: 200px;
+        .logo {
+        }
+        .menus {
+            .menu-item {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                cursor: pointer;
+                padding: 5px;
+                border-radius: 5px;
+                min-width: 150px;
+                &:not(:first-child) {
+                    margin-top: 10px;
+                }
+                .menu-icon {
+                    transition: .2s all linear;
+                }
+                &.active {
+                    .menu-label {
+                        font-weight: bold;
+                    }
+                }
+                &:hover {
+                    background-color: #f2f2f2;
+                    & > .menu-icon {
+                        scale: 1.1;
+                    }
+                }
+            }
+        }
+    }
+    .main {
+        width: 100%;
+        padding-top: 0.5rem;
+        &.space-left {
+            margin-left: 200px;
+        }
+    }
+}

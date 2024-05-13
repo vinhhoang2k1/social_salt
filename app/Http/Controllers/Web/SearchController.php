@@ -19,7 +19,7 @@ class SearchController extends Controller
     }
     public function searchUser($userName) {
         // return $userName;
-        $result = $this->userService->findUserByName($userName);
+        $result = $this->userService->findUserByName($userName, 'GUEST');
         return Inertia::render('Authenticated/Search/SearchUser',["response" => $result]);
     }
 }

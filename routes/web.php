@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Web\SearchController;
@@ -19,7 +21,7 @@ use Inertia\Inertia;
 */
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'check_permission_guest'])->group(function () {
     Route::get('/', function () {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
@@ -42,10 +44,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{name}', [SearchController::class, 'searchUser']);
     });
 
-
-
     Route::post('/upload', [UploadController::class, 'upload']);
     Route::post('/upload-multiple', [UploadController::class, 'uploadMultiple']);
+});
+
+Route::middleware(['auth', 'check_permission_admin'])->group(function () {
+    Route::group(['prefix' => '/admin'], function () {
+        Route::get('/home', [HomeController::class, 'create'] )->name('admin');
+        Route::get('/user-admin', [UserController::class, 'ViewListUserAdmin'] );
+        Route::get('/user', [UserController::class, 'ViewListUser'] );
+        
+        Route::post('/user-create', [UserController::class, 'saveNewUser']);
+        Route::post('/user-update', [UserController::class, 'saveUpdateUser']);
+        Route::post('/user-destroy/{userId}', [UserController::class, 'destroyUser']);
+    });
 });
 
 
