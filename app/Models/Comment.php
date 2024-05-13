@@ -19,6 +19,9 @@ class Comment extends Model
         'content',
         'comment_parent',
     ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 }

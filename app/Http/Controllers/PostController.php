@@ -43,7 +43,6 @@ class PostController extends Controller
     public function view($postId)
     {
         $data = $this->postService->findPostById($postId);
-        return $data;
         return Inertia::render('Authenticated/Post/ViewPost', [
             'response' => $data,
         ]);

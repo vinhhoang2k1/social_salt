@@ -76,7 +76,7 @@ const PortItem = (props: Props) => {
                         </span>
                     ))}
             </div>
-            <div className="post__item-all-comments" onClick={() => router.get('/post/view/asdfasdf')}>View all 103 comments</div>
+            <div className="post__item-all-comments" onClick={() => router.get('/post/view/01hxkmc2rnxrvnnf6e04ctx8s0')}>View all 103 comments</div>
             <div className="input-comment">
                 <InputComment onClickPost={(value) => {console.log('value', value);
                 }}/>

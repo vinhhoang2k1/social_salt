@@ -9,16 +9,25 @@ import ShareIcon from "@/Components/Icons/Share";
 import "./style.scss";
 import Comment from "./Components/Comment";
 import InputComment from "../Home/components/InputComment";
-
-type Props = {};
-const ViewPost = (props: Props) => {
+import { IBasePropsPage } from "@/types/common/Common.type";
+import { IPost } from "@/types/Web/Post";
+import { IComment } from "@/types/Web/Comment";
+import { IUser } from "@/types";
+import { IMedia } from "@/types/Web/Media";
+interface IResponse extends IPost {
+    comments: IComment[];
+    create_by: IUser;
+    medias: IMedia[];
+}
+type Props = {} & IBasePropsPage<IResponse>;
+const ViewPost = ({ config, response }: Props) => {
     return (
         <>
             <Head title="View Post" />
             <AuthenticateLayout>
                 <Dialog
                     open={true}
-                    handler={() => router.get('/')}
+                    handler={() => router.get("/")}
                     className="post__view-dialog"
                 >
                     <DialogBody>
@@ -35,13 +44,17 @@ const ViewPost = (props: Props) => {
                                 <div className="author flex items-center justify-between">
                                     <div className="show-info flex items-center">
                                         <img
-                                            src="https://i.pravatar.cc/300"
+                                            src={
+                                                config.basePath +
+                                                "/" +
+                                                response.create_by.avatar
+                                            }
                                             alt=""
                                             className="circle author-avatar"
                                         />
                                         <span className="origin">
                                             <div className="author-name">
-                                                Hoa Nguyen
+                                                {response.create_by.fullname}
                                             </div>
                                         </span>
                                     </div>
@@ -53,27 +66,35 @@ const ViewPost = (props: Props) => {
                                     <div className="author-caption">
                                         <div className="show-info flex items-center">
                                             <img
-                                                src="https://i.pravatar.cc/300"
+                                                src={
+                                                    config.basePath +
+                                                    "/" +
+                                                    response.create_by.avatar
+                                                }
                                                 alt=""
                                                 className="circle author-avatar"
                                             />
-                                            <span className="origin flex gap-1 items-center">
+                                            <span className="origin flex items-center gap-1">
                                                 <span className="author-name">
-                                                    Hoa Nguyen
+                                                    {
+                                                        response.create_by
+                                                            .fullname
+                                                    }
                                                 </span>
                                                 <span className="caption">
-                                                    Another one for wind lovers
-                                                    in space
+                                                    {response.content}
                                                 </span>
                                             </span>
                                         </div>
                                     </div>
-                                    {Array.from([1, 2, 3, 4]).map((item) => (
-                                        <Comment key={`comment-${item}`} />
+                                    {response.comments.map((comment) => (
+                                        <Comment
+                                            key={`comment-${comment.id}`}
+                                        />
                                     ))}
                                 </div>
                                 <div className="action-post">
-                                    <div className="flex gap-2 react__list">
+                                    <div className="react__list flex gap-2">
                                         <span className="react__item">
                                             <NotificationIcon
                                                 active
