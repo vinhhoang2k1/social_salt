@@ -6,21 +6,19 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PostMedia extends Model
+class Comment extends Model
 {
     use HasFactory, HasUlids;
 
-    protected $table = 'post_media';
+    protected $table = 'comments';
 
     protected $fillable = [
         'id',
+        'user_id',
         'post_id',
-        'type',
-        'caption',
-        'media_path',
+        'content',
+        'comment_parent',
     ];
-    public function post()
-    {
-        return $this->belongsTo(Post::class, 'post_id', 'id');
-    }
+
+
 }

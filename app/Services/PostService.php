@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Follow;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostMedia;
 use Illuminate\Support\Facades\DB;
@@ -54,5 +55,21 @@ class PostService
         } catch (\Throwable $th) {
             throw 'Inser post media error !';
         }
+    }
+    
+    public function findPostById(string $postId)
+    {
+        $data = Post::find($postId);
+        $data->medias;
+        $data->createBy;
+        $data->comments;
+        return $data;
+    }
+
+    public function addCommentForPost($data)
+    {   
+        $newComment = new Comment($data);
+        $newComment->save();
+        return $newComment;
     }
 }
