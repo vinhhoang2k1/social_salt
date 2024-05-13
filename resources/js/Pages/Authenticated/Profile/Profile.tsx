@@ -63,7 +63,7 @@ export function FollowModal(props: ModalProps) {
             setFollows(data.follows);
         };
         fetch();
-    }, [follows]);
+    }, []);
 
 
     const handleOpen = () => setOpen((cur) => !cur);

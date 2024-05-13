@@ -72,8 +72,8 @@ const SearchUser = ({ response }: Props) => {
                         <div className="result">
                             <div className="">
                                 {response && response.map((user) => (
-                                    <a
-                                        href={`/profile/${user.id}`}
+                                    <div
+                                        onClick={() => router.get(`/profile/${user.id}`)}
                                         key={`result-${user.id}`}
                                         className="result__item flex gap-2"
                                     >
@@ -91,7 +91,7 @@ const SearchUser = ({ response }: Props) => {
                                                 NOTHING IS IMPOSSIBLE
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 ))}
                             </div>
                         </div>
