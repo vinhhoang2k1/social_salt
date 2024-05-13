@@ -43,9 +43,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-    ];
+    // protected $hidden = [
+    //     'password',
+    // ];
 
     public function posts()
     {

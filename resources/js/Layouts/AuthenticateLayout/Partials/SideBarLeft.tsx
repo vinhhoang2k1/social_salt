@@ -9,7 +9,13 @@ import SearchIcon from "@/Components/Icons/Search";
 import { IConfig, IResUser } from "@/types/common/Common.type";
 import { PageProps } from "@inertiajs/inertia";
 import { router, usePage } from "@inertiajs/react";
-import { useMemo } from "react";
+import {
+    Button,
+    Dialog,
+    DialogBody
+} from "@material-tailwind/react";
+import { useMemo, useState } from "react";
+import { IoLogOutOutline, IoMenu } from "react-icons/io5";
 
 const menu = {
     home: "/",
@@ -22,9 +28,9 @@ const menu = {
     profile: "/profile",
 };
 const SideBarLeft = () => {
-    const {basePath} = usePage<PageProps>().props.config as IConfig;    
-
-    const {user} = usePage<PageProps>().props.auth as {user: IResUser};    
+    const { basePath } = usePage<PageProps>().props.config as IConfig;
+    const [showMore, setShowMore] = useState(false)
+    const { user } = usePage<PageProps>().props.auth as { user: IResUser };
 
     const menus = useMemo(() => {
         return [
@@ -127,6 +133,15 @@ const SideBarLeft = () => {
                 ))}
             </div>
             <div className="more-action">
+                <IoMenu size={"30"} onClick={() => setShowMore(true)} />
+                <Dialog open={showMore} handler={() => setShowMore(false)}>
+                    <DialogBody className="p-4 ">
+                        <Button className="flex m-auto items-center gap-4" onClick={() => router.get('/logout')}>
+                            <IoLogOutOutline size={20} />
+                            <span>Logout</span>
+                        </Button>
+                    </DialogBody>
+                </Dialog>
             </div>
         </div>
     );
