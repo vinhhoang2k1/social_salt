@@ -37,6 +37,7 @@ import {
 
 type Props = {
     profileData: IResUser;
+    isFollowing: boolean;
 } & IBasePropsPage<{}>;
 
 type ModalProps = {
@@ -131,10 +132,10 @@ export function FollowModal(props: ModalProps) {
 }
 
 const Profile = (props: Props) => {
-    const {config, auth, profileData } = props;
+    const {config, auth, profileData, isFollowing } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
-    const [isFollowing, setFollowing] = useState(false);
+    // const [isFollowing, setFollowing] = useState(false);
     const inputAvatarRef = useRef<HTMLInputElement>(null);
     const menus = useMemo(() => {
         return [
@@ -220,9 +221,9 @@ const Profile = (props: Props) => {
 
     const handleFollow = () => {
         const fetch = async () => {
-            const { data } = await fetcher.get(`/profile/follow/${auth.user.id}`);
+            const { data } = await fetcher.get(`/profile/follow/${profileData.id}`);
             if (data.success == true) {
-                setFollowing(true);
+                // setFollowing(true);
             }
         };
         fetch();

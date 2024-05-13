@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Web\FeedController;
 use App\Http\Controllers\Web\SearchController;
 use App\Http\Controllers\Web\UploadController;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,7 @@ use Inertia\Inertia;
 
 
 Route::middleware(['auth', 'check_permission_guest'])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Authenticated/Home/Home');
-    })->name('home');
+    Route::get('/', [FeedController::class, 'index'])->name('home');
     Route::group(['prefix' => '/profile'], function () {
         Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
         Route::get('/following/{id}', [ProfileController::class, 'getFollowing']);

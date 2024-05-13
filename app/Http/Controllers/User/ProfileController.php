@@ -21,12 +21,15 @@ class ProfileController extends Controller
     public function getUserProfile(Request $request, $id = null)
     {
         $userId = Auth::user()->id; 
+        $isFollowing = false;
         if ($id) {
             $userId = $id;
+            $isFollowing = $this->userService->checkFollowing($id, $userId);
         }
         $profileData = User::with('posts', 'followers', 'following')->find($userId);
         return Inertia::render('Authenticated/Profile/Profile', [
             'profileData' => $profileData,
+            'isFollowing' => $isFollowing,
         ]);
     }
 
@@ -58,9 +61,9 @@ class ProfileController extends Controller
 
     public function addFollow($id) {
         $authorId = Auth::user()->id;
-        $newFollow = $this->userService->follow($authorId, $id);
+        $newFollow = $this->userService->follow($id, $authorId);
         if ($newFollow) {
-            return response()->json([
+            return  redirect()->back()->with([
                 'success' => true,
                 'message' => 'Follow successfully',
             ]);

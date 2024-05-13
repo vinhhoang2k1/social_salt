@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Follow;
 use App\Models\Post;
 use App\Models\PostMedia;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,13 @@ class PostService
     public function __construct(UploadService $uploadService)
     {
         $this->uploadService = $uploadService;
+    }
+
+    public function getAll(string $authorId) {
+        $following = Follow::where('following_user_id', $authorId)->pluck('followed_user_id');
+        $following->push($authorId);
+        $posts = Post::with('medias')->whereIn('user_id', $following)->with('user')->get();
+        return $posts;
     }
     public function savePost($data)
     {
