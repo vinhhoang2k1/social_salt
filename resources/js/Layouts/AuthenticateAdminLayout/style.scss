@@ -22,7 +22,7 @@
                     margin-top: 10px;
                 }
                 .menu-icon {
-                    transition: .2s all linear;
+                    transition: 0.2s all linear;
                 }
                 &.active {
                     .menu-label {
@@ -36,6 +36,12 @@
                     }
                 }
             }
+        }
+        .more-action {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            cursor: pointer;
         }
     }
     .main {

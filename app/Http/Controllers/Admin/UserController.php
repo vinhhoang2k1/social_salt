@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -46,6 +47,7 @@ class UserController extends Controller
     {
         $createUserRequest->validated();
         $user = new User($createUserRequest->all());
+        $user->password = Hash::make($user->password);
         $user->save();
         return redirect()->back()->with('success', 'Create user success !');
     }
@@ -55,6 +57,10 @@ class UserController extends Controller
             $updateUserRequest->validated();
             $data = $updateUserRequest->all();
             $user = User::find($data['id']);
+            if (isset($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            }
+            // return $user;
             $user->update($data);
             return redirect()->back()->with('success', 'Update user success !');
         } catch (\Throwable $th) {
