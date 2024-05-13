@@ -17,6 +17,7 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next)
     {
+        // dd(Auth::user());
         if (Auth::user()->role == 'GUEST') {
             return $next($request);
         }
