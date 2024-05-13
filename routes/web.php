@@ -26,8 +26,12 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         return Inertia::render('Authenticated/Home/Home');
     })->name('home');
     Route::group(['prefix' => '/profile'], function () {
-        Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::post('/change-avatar', [ProfileController::class, 'updateAvatar']);
+        Route::get('/following/{id}', [ProfileController::class, 'getFollowing']);
+        Route::get('/followers/{id}', [ProfileController::class, 'getFollowers']);
+        Route::get('/follow/{id}', [ProfileController::class, 'addFollow']);
+        Route::get('/{id}', [ProfileController::class, 'getUserProfile'])->name('profile');
+        Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
     });
 
     Route::prefix('post')->group(function () {

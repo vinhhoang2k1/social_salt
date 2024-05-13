@@ -72,7 +72,8 @@ const SearchUser = ({ response }: Props) => {
                         <div className="result">
                             <div className="">
                                 {response && response.map((user) => (
-                                    <div
+                                    <a
+                                        href={`/profile/${user.id}`}
                                         key={`result-${user.id}`}
                                         className="result__item flex gap-2"
                                     >
@@ -90,7 +91,7 @@ const SearchUser = ({ response }: Props) => {
                                                 NOTHING IS IMPOSSIBLE
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 ))}
                             </div>
                         </div>
