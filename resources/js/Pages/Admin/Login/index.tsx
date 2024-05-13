@@ -1,7 +1,7 @@
 import Input from "@/Components/Inputs/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import useBetterForm from "@/Utilities/useBetterForm";
-import { ICreateUser } from "@/types";
+import { TLoginPayload } from "@/types/Auth/auth";
 import { Head, router } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
@@ -9,17 +9,15 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import "./style.scss";
 
-const Register = () => {
-    const userForm = useBetterForm<ICreateUser>({
-        fullname: "",
+const index = () => {
+    const userForm = useBetterForm<TLoginPayload>({
         email: "",
         password: "",
-        password_confirmation: ""
     });
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         router.post(
-            "/register",
+            "/admin/login",
             {
                 ...userForm.data,
             },
@@ -35,42 +33,23 @@ const Register = () => {
 
     return (
         <>
-            <Head title="Register page" />
+            <Head title="Login page" />
             <GuestLayout>
-                <div className="register-container">
-                    <div className="register-pic">
+                <div className="login-container">
+                    <div className="login-pic">
                         <img
                             className="img"
-                            src="./images/pic-login.webp"
+                            src="../images/pic-login.webp"
                             alt=""
                         />
                     </div>
-                    <div className="register-form">
+                    <div className="login-form">
                         <form className="space-y-4" onSubmit={submit}>
-                            <h2 className="title">Member Register</h2>
-                            <Input
-                                label=""
-                                name="name"
-                                type="text"
-                                autoFocus
-                                value={userForm.data.fullname}
-                                errorMsg={userForm.errors.fullname}
-                                hideError={userForm.isDirty("fullname")}
-                                disabled={userForm.processing}
-                                className="cs-input"
-                                autoComplete="name"
-                                onChange={(e) =>
-                                    userForm.setData("fullname", e.target.value)
-                                }
-                                icon={<MdEmail className="cs-input-icon" />}
-                                required={false}
-                                classNameWrap="wrap-input"
-                                placeholder="Your name"
-                            />
+                            <h2 className="title">Admin Login</h2>
                             <Input
                                 label=""
                                 name="email"
-                                type="email"
+                                type="text"
                                 autoFocus
                                 value={userForm.data.email}
                                 errorMsg={userForm.errors.email}
@@ -107,41 +86,18 @@ const Register = () => {
                                 placeholder="Password"
                                 required={false}
                             />
-                             <Input
-                                label=""
-                                name="password_confirmation"
-                                type="password"
-                                autoFocus
-                                value={userForm.data.password_confirmation}
-                                errorMsg={userForm.errors.password_confirmation}
-                                hideError={userForm.isDirty("password_confirmation")}
-                                disabled={userForm.processing}
-                                className="cs-input"
-                                autoComplete="password_confirmation"
-                                onChange={(e) =>
-                                    userForm.setData("password_confirmation", e.target.value)
-                                }
-                                icon={
-                                    <RiLockPasswordFill className="cs-input-icon" />
-                                }
-                                classNameWrap="wrap-input"
-                                placeholder="Confirm password"
-                                required={false}
-                            />
                             <div className="action">
                                 <button
                                     type="submit"
                                     className="cs-input cs-btn-submit"
                                 >
-                                    Register
+                                    Login
                                 </button>
                             </div>
-                            <div className="active-hover create-account-action" onClick={() => router.get('login')}>
-                                <span className="label">
-                                  Login now
-                                </span>
-                                <span>
-                                    <FaLongArrowAltRight />
+                            <div className="more-action">
+                                <span className="label">Forgot </span>
+                                <span className="active-hover forgot">
+                                    Username / Password
                                 </span>
                             </div>
                         </form>
@@ -152,4 +108,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default index;

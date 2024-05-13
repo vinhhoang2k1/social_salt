@@ -30,6 +30,18 @@ class UserService {
             return $result->getCollection();
         }
     }
+    public function findUserByCondition($condition ) {
+        $users = User::query();
+        $users->where('role', $condition['role']);
+        if(isset($condition['fullname'])) {
+            $users->where('fullname', 'LIKE', "%" . $condition['fullname'] . "%");
+        }
+        // if(isset($page)) {
+        //     $users->where('fullname');
+        // }
+        $result = $users->orderBy('fullname')->paginate(30);
+        return $result->getCollection();
+    }
 
     public function getFollowers(string $userId) {
         $followers = User::whereIn('id', function ($query) use ($userId) {

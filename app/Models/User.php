@@ -35,7 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'avatar',
         'bio',
         'date_of_birth',
-        'user_status_id'
+        'user_status_id',
+        'role'
     ];
     /**
      * The attributes that should be hidden for serialization.

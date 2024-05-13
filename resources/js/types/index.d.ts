@@ -32,6 +32,7 @@ export interface IUser extends ICreateUser, BasicModel, SoftDelete {
     gender: string | null,
     date_of_birth: string | null,
     user_status_id: string | null
+    role: string
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>,> = T & {

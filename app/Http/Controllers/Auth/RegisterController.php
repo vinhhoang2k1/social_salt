@@ -34,7 +34,7 @@ class RegisterController extends Controller
             if (
                 isset($request->email)
             ) {
-                $user->fullname = $request->name;
+                $user->fullname = $request->fullname;
                 $user->email = $request->email;
                 $user->password = Hash::make($request->password); 
             }

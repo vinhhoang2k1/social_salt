@@ -12,6 +12,11 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/register', [RegisterController::class, 'store']);
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+    Route::group(['prefix' => '/admin'], function() {
+        Route::get('/login', [AuthenticatedSessionController::class, 'adminCreate'] );
+        Route::post('/login', [AuthenticatedSessionController::class, 'adminStore']);
+    });
 });
 
 
