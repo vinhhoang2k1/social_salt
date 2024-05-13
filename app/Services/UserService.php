@@ -53,12 +53,12 @@ class UserService {
     }
 
     public function getFollowing(string $userId) {
-        $followers = User::whereIn('id', function ($query) use ($userId) {
+        $following = User::whereIn('id', function ($query) use ($userId) {
             $query->select('followed_user_id')
                 ->from('follows')
                 ->where('following_user_id', $userId);
         })->get();
-        return $followers;
+        return $following;
     }
 
     public function follow(string $followingUserId, string $followerUserId) {
@@ -68,8 +68,20 @@ class UserService {
             $newFollow->followed_user_id = $followingUserId;
             $newFollow->save();
             return $newFollow->id;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function checkFollowing(string $followingUserId, string $followerUserId) {
+        try {
+            $follow = Follow::query();
+            $isFollowing = $follow->where('following_user_id', $followingUserId)
+                ->where('followed_user_id', $followerUserId)
+                ->exists();
+            return  $isFollowing;
         } catch (\Throwable $th) {
-            throw 'Error !';
+            //throw $th;
         }
     }
 

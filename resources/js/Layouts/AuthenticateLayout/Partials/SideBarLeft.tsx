@@ -119,7 +119,7 @@ const SideBarLeft = () => {
     }, [location.pathname, menu, user.avatar]);
     return (
         <div className="side-bar-left">
-            <div className="head">logo</div>
+            <div className="head"><i className="logo">Salt</i></div>
             <div className="menus">
                 {menus.map((menu) => (
                     <div

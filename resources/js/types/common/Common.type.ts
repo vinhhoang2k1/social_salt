@@ -23,9 +23,17 @@ export interface IResUser {
 export interface IResPost {
     id: string,
     user_id: string,
+    content: string,
     location: string,
     mode: number,
     post_type: number,
+}
+export interface IResPostMedia {
+    id: string,
+    post_id: string,
+    caption: string,
+    media_path: string,
+    type: string,
 }
 export interface IResFollow {
     following_user_id: string,
