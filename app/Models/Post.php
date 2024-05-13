@@ -22,8 +22,15 @@ class Post extends Model
         'st_public'
     ];
 
-    public function user()
+    public function createBy()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function medias() {
+        return $this->hasMany(PostMedia::class, 'post_id', 'id');
+    }
+    public function comments() {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 }

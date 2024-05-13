@@ -20,6 +20,8 @@ use Inertia\Inertia;
 |
 */
 
+// include('./auth.php');
+
 
 Route::middleware(['auth', 'check_permission_guest'])->group(function () {
     Route::get('/', function () {
@@ -34,13 +36,11 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
     });
 
-    Route::prefix('post')->group(function () {
+    Route::group(['prefix' => '/post'], function () {
         Route::get('create', [PostController::class, 'create']);
         Route::get('/view/{postId}', [PostController::class, 'view']);
 
-        Route::get('/test', function () {
-            return 'this is data';
-        });
+        Route::post('/comment-create', [PostController::class, 'addComment']);
         Route::post('/create', [PostController::class, 'store']);
     });
     Route::prefix('search')->group(function () {
@@ -54,10 +54,10 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
 
 Route::middleware(['auth', 'check_permission_admin'])->group(function () {
     Route::group(['prefix' => '/admin'], function () {
-        Route::get('/home', [HomeController::class, 'create'] )->name('admin');
-        Route::get('/user-admin', [UserController::class, 'ViewListUserAdmin'] );
-        Route::get('/user', [UserController::class, 'ViewListUser'] );
-        
+        Route::get('/home', [HomeController::class, 'create'])->name('admin');
+        Route::get('/user-admin', [UserController::class, 'ViewListUserAdmin']);
+        Route::get('/user', [UserController::class, 'ViewListUser']);
+
         Route::post('/user-create', [UserController::class, 'saveNewUser']);
         Route::post('/user-update', [UserController::class, 'saveUpdateUser']);
         Route::post('/user-destroy/{userId}', [UserController::class, 'destroyUser']);
