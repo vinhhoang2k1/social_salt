@@ -27,6 +27,7 @@ export interface IResPost {
     location: string,
     mode: number,
     post_type: number,
+    created_at: string
 }
 export interface IResPostMedia {
     id: string,

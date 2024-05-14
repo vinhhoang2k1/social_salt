@@ -21,6 +21,12 @@ interface IResponse extends IPost {
 }
 type Props = {} & IBasePropsPage<IResponse>;
 const ViewPost = ({ config, response }: Props) => {
+    const handleAddComment = (comment: string) => {
+        router.post("/post/comment-create", {
+            post_id: response.id,
+            content: comment,
+        });
+    };
     return (
         <>
             <Head title="View Post" />
@@ -90,6 +96,7 @@ const ViewPost = ({ config, response }: Props) => {
                                     {response.comments.map((comment) => (
                                         <Comment
                                             key={`comment-${comment.id}`}
+                                            comment={comment}
                                         />
                                     ))}
                                 </div>
@@ -113,7 +120,7 @@ const ViewPost = ({ config, response }: Props) => {
                                     <div className="input-comment">
                                         <InputComment
                                             onClickPost={(value) => {
-                                                console.log("value", value);
+                                                handleAddComment(value);
                                             }}
                                         />
                                     </div>

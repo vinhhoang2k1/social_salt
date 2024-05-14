@@ -49,13 +49,12 @@ class PostController extends Controller
     }
     public function addComment(CreateCommentRequest $request)
     {
-        dd(11);
         try {
             $data = $request->validated();
             $userId = Auth::user()->id;
             $data['user_id'] = $userId;
             $comment = $this->postService->addCommentForPost($data);
-            return response()->json($comment);
+            return redirect()->back();
         } catch (\Exception $e) {
             //throw $th;
 
