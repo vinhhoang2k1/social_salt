@@ -1,5 +1,10 @@
 import React from "react";
-import { IResPost, IResPostMedia, IResUser, IConfig} from "@/types/common/Common.type";
+import {
+    IResPost,
+    IResPostMedia,
+    IResUser,
+    IConfig,
+} from "@/types/common/Common.type";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/inertia";
 import NotificationIcon from "@/Components/Icons/Notification";
@@ -8,19 +13,26 @@ import ShareIcon from "@/Components/Icons/Share";
 import InputComment from "./InputComment";
 import Slide from "./Slide";
 import { router } from "@inertiajs/react";
+import { PostData } from "../Home";
+import { getTimeDifference } from "@/Utilities/function";
 type Props = {
-    post: IResPost,
-    user: IResUser,
-    medias: Array<IResPostMedia>,
+    post: PostData;
+    user: IResUser;
+    medias: Array<IResPostMedia>;
     // config: IConfig,
 };
 const PortItem = (props: Props) => {
-    const {user, post, medias} = props;
+    const { user, post, medias } = props;
     const { basePath } = usePage<PageProps>().props.config as IConfig;
-    const mediaPaths = medias.map(media => {
+    const mediaPaths = medias.map((media) => {
         return basePath + "/" + media.media_path;
-    })
-    
+    });
+    const handleAddComment = (comment: string) => {
+        router.post("/post/comment-create", {
+            post_id: post.id,
+            content: comment,
+        });
+    };
     return (
         <div className="post__item">
             <div className="post__item-head">
@@ -34,7 +46,7 @@ const PortItem = (props: Props) => {
                         <div className="author-name">{user.fullname}</div>
                         <div className="type">Original Audio</div>
                     </span>
-                    <div className="ported">6d</div>
+                    <div className="ported">{getTimeDifference(post.created_at)}</div>
                 </div>
                 <div className="more-action">...</div>
             </div>
@@ -46,8 +58,8 @@ const PortItem = (props: Props) => {
                         <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
                     </video>
                 </div> */}
-                
-                <Slide images={mediaPaths}/>
+
+                <Slide images={mediaPaths} />
             </div>
             <div className="post__item-action">
                 <div className="react__list">
@@ -76,10 +88,18 @@ const PortItem = (props: Props) => {
                         </span>
                     ))}
             </div>
-            <div className="post__item-all-comments" onClick={() => router.get('/post/view/01hxkmc2rnxrvnnf6e04ctx8s0')}>View all 103 comments</div>
+            <div
+                className="post__item-all-comments"
+                onClick={() => router.get("/post/view/" + post.id)}
+            >
+                View all {post.comments_count} comments
+            </div>
             <div className="input-comment">
-                <InputComment onClickPost={(value) => {console.log('value', value);
-                }}/>
+                <InputComment
+                    onClickPost={(value) => {
+                        handleAddComment(value);
+                    }}
+                />
             </div>
         </div>
     );

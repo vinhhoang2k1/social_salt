@@ -6,8 +6,9 @@ import { Head } from "@inertiajs/react";
 import PortItem from "./components/PostItem";
 import "./style.scss";
 
-type PostData = {
-    user: IResUser,
+export type PostData = {
+    comments_count: number
+    create_by: IResUser,
     medias: Array<IResPostMedia>,
 } & IResPost;
 
@@ -46,7 +47,7 @@ const Home = (props: Props) => {
                         {posts.map((post) => (
                             <PortItem 
                                 post={post}
-                                user={post.user}
+                                user={post.create_by}
                                 medias={post.medias}
                             />
                         ))}
@@ -58,3 +59,4 @@ const Home = (props: Props) => {
 };
 
 export default Home;
+ 

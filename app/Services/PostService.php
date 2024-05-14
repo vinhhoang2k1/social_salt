@@ -16,10 +16,20 @@ class PostService
         $this->uploadService = $uploadService;
     }
 
-    public function getAll(string $authorId) {
+    public function getAll(string $authorId)
+    {
         $following = Follow::where('following_user_id', $authorId)->pluck('followed_user_id');
         $following->push($authorId);
-        $posts = Post::with('medias')->whereIn('user_id', $following)->with('user')->get();
+        // $posts = Post::with('medias')->whereIn('user_id', $following)->with('createBy')->with('getCommentsCount')->get();
+        $posts = Post::withCount('comments')->get();
+        // $posts->getCommentsCount;
+        foreach ($posts as &$post) {
+            $post->medias;
+            $post->createBy;
+            $post->comments_count;
+        }
+
+
         return $posts;
     }
     public function savePost($data)
