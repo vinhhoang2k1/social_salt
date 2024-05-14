@@ -25,7 +25,12 @@ const InputComment = (props: Props) => {
             />
             {
                 isShowBtnPost && (
-                    <span className="submit-cmt" onClick={() => props.onClickPost(inputRef.current?.value!)}>Post</span>
+                    <span className="submit-cmt" onClick={() => {
+                        props.onClickPost(inputRef.current?.value!)
+                        if (inputRef.current) {
+                            inputRef.current.value = '';
+                        }
+                    }}>Post</span>
                 )
             }
         </>

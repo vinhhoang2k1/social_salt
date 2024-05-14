@@ -48,18 +48,17 @@ class PostService
             throw 'Inser post media error !';
         }
     }
-    
+
     public function findPostById(string $postId)
     {
-        $data = Post::find($postId);
+        $data = Post::with('comments.user')->find($postId);
         $data->medias;
         $data->createBy;
-        $data->comments;
         return $data;
     }
 
     public function addCommentForPost($data)
-    {   
+    {
         $newComment = new Comment($data);
         $newComment->save();
         return $newComment;
