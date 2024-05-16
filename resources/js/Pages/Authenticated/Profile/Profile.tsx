@@ -5,6 +5,7 @@ import {
     IResFollow,
     IBasePropsPage,
     IConfig,
+    IResPost,
 } from "@/types/common/Common.type";
 import { Head, router } from "@inertiajs/react";
 import {
@@ -25,6 +26,8 @@ import CommentIcon from "./components/Icons/Comment";
 import Setting from "./components/Icons/Setting";
 import Plus from "./components/Icons/Plus";
 import { CiEdit } from "react-icons/ci";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "@inertiajs/inertia";
 import "./style.scss";
 import {
     Tabs,
@@ -38,6 +41,7 @@ import {
 type Props = {
     profileData: IResUser;
     isFollowing: boolean;
+    posts: Array<IResPost>;
 } & IBasePropsPage<{}>;
 
 type ModalProps = {
@@ -132,11 +136,15 @@ export function FollowModal(props: ModalProps) {
 }
 
 const Profile = (props: Props) => {
-    const {config, auth, profileData, isFollowing } = props;
+    const {config, auth, profileData, isFollowing, posts } = props;
     const [activeTab, setActiveTab] = useState("posts");
     const [avatarUrl, setAvatarUrl] = useState("");
-    // const [isFollowing, setFollowing] = useState(false);
     const inputAvatarRef = useRef<HTMLInputElement>(null);
+    const { basePath } = usePage<PageProps>().props.config as IConfig;
+
+    
+    console.log('isFollowing,', isFollowing);
+    
     const menus = useMemo(() => {
         return [
             {
@@ -171,53 +179,6 @@ const Profile = (props: Props) => {
             },
         ];
     }, [location.pathname, menu]);
-    const postList = [
-        {
-            group: "POSTS",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 1",
-        },
-        {
-            group: "SAVED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 2",
-        },
-        {
-            group: "TAGGED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 3",
-        },
-        {
-            group: "POSTS",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 4",
-        },
-        {
-            group: "SAVED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 5",
-        },
-        {
-            group: "TAGGED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 6",
-        },
-        {
-            group: "POSTS",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 7",
-        },
-        {
-            group: "SAVED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 8",
-        },
-        {
-            group: "TAGGED",
-            media_path: "https://i.pravatar.cc/300",
-            title: "post 9",
-        },
-    ];
 
     const handleFollow = () => {
         const fetch = async () => {
@@ -297,7 +258,7 @@ const Profile = (props: Props) => {
                             <div className="social">
                                 <h3>
                                     {" "}
-                                    <span>{profileData.posts.length}</span>posts
+                                    <span>{posts.length}</span>posts
                                 </h3>
                                 <FollowModal
                                     config={config}
@@ -323,14 +284,14 @@ const Profile = (props: Props) => {
 
                     <div className="social-media">
                         <div className="add-btn">
-                            <button className="">
+                            <button className="" onClick={() => router.get('/post/create')}>
                                 <Plus />
                             </button>
                             <span>New</span>
                         </div>
 
                         <div className="media-list">
-                            <Tabs value="POSTS">
+                            <Tabs value={'POSTS'}>
                                 <TabsHeader>
                                     {menus.map((menu, key) => (
                                         <Tab
@@ -351,18 +312,21 @@ const Profile = (props: Props) => {
                                 </TabsHeader>
                                 <TabsBody>
                                     <div className="media__container">
-                                        {postList.map((post, key) => (
+                                        {posts.map((post, key) => (
                                             <TabPanel
                                                 className="media__item"
                                                 key={key}
-                                                value={post.group}
+                                                value={'POSTS'}
                                             >
                                                 <img
-                                                    src={post.media_path}
+                                                    src={basePath + "/" + post.medias[0].media_path}
                                                     alt=""
                                                 />
                                                
-                                                <div className="media__preview">
+                                                <div 
+                                                    onClick={() => router.get(`/post/view/${post.id}`)}
+                                                    className="media__preview"
+                                                >
                                                     <div className="media__info">
                                                         <div className="like">
                                                             <HeartIcon />
@@ -370,7 +334,7 @@ const Profile = (props: Props) => {
                                                         </div>
                                                         <div className="comment">
                                                             <CommentIcon />
-                                                            <span>{Math.floor(Math.random() * 40) + 1}</span>
+                                                            <span>{post.comments_count}</span>
                                                         </div>
                                                     </div>
                                                 </div>
