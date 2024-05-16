@@ -21,7 +21,9 @@ class PostService
         $following = Follow::where('following_user_id', $authorId)->pluck('followed_user_id');
         $following->push($authorId);
         // $posts = Post::with('medias')->whereIn('user_id', $following)->with('createBy')->with('getCommentsCount')->get();
-        $posts = Post::withCount('comments')->get();
+        $posts = Post::withCount('comments')
+            ->where('st_public', 1)
+            ->get();
         // $posts->getCommentsCount;
         foreach ($posts as &$post) {
             $post->medias;

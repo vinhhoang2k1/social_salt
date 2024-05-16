@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'user_id', 'id');
     }
 
     public function followers()

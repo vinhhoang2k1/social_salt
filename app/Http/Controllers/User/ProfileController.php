@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UpdateAvatarRequest;
 use App\Models\Follow;
+use App\Models\Post;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -26,10 +27,16 @@ class ProfileController extends Controller
             $userId = $id;
             $isFollowing = $this->userService->checkFollowing($id, $userId);
         }
-        $profileData = User::with('posts', 'followers', 'following')->find($userId);
+        $profileData = User::with('followers', 'following')->find($userId);
+        $posts = Post::with('medias')
+            ->where('user_id', $userId)
+            ->withCount('comments')
+            ->latest()
+            ->get();
         return Inertia::render('Authenticated/Profile/Profile', [
             'profileData' => $profileData,
             'isFollowing' => $isFollowing,
+            'posts' => $posts,
         ]);
     }
 

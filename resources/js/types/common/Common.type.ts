@@ -27,7 +27,10 @@ export interface IResPost {
     location: string,
     mode: number,
     post_type: number,
-    created_at: string
+    created_at: string,
+    st_public: number,
+    medias: Array<IResPostMedia>,
+    comments_count: number,
 }
 export interface IResPostMedia {
     id: string,
@@ -42,6 +45,12 @@ export interface IResFollow {
 }
 export interface IConfig {
     basePath: string
+}
+export interface IComment {
+    id: string,
+    user_id: string,
+    post_id: string,
+    comment_parent: string,
 }
 export interface IBasePropsPage<D> {
     errors: any;
