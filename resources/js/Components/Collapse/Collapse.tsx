@@ -8,7 +8,7 @@ type Props = {
 } & PropsWithChildren;
 
 const CollapseComponent = ({ children, label }: Props) => {
-    const [activeAccessibility, setActiveAccessibility] = useState(true);
+    const [activeAccessibility, setActiveAccessibility] = useState(false);
 
     return (
         <div className="collapse-item ">

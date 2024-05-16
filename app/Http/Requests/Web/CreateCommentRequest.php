@@ -25,7 +25,8 @@ class CreateCommentRequest extends FormRequest
     {
         return [
             'post_id' => ['required'],
-            'content' => ['required']
+            'content' => ['required'],
+            'comment_parent' => []
         ];
     }
 }

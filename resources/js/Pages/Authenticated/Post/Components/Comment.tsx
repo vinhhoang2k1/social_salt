@@ -1,23 +1,37 @@
 import CollapseComponent from "@/Components/Collapse/Collapse";
 import CommentItem from "./CommentItem";
 import { IComment } from "@/types/Web/Comment";
+import { TSelectReply } from "../ViewPost";
 
 type Props = {
-    key?: string | number,
-    comment: IComment
+    key?: string | number;
+    comment: IComment;
+    setSelectReply: React.Dispatch<
+        React.SetStateAction<TSelectReply | undefined>
+    >;
 };
 
-const Comment = ({key, comment}: Props) => {
+const Comment = ({ key, comment, setSelectReply }: Props) => {
     return (
         <div key={key}>
-            <CommentItem comment={comment} />
-            {/* <CollapseComponent label="View replies (2)">
-                <div className="list-reply">
-                    {Array.from([1, 2]).map((item) => (
-                        <CommentItem key={`${key}-reply-${item}`} />
-                    ))}
-                </div>
-            </CollapseComponent> */}
+            <CommentItem
+                comment={comment}
+                level={1}
+                onReply={(values) => setSelectReply(values)}
+            />
+            {comment.child.length > 0 && (
+                <CollapseComponent label={`View replies ${comment.child.length}`}>
+                    <div className="list-reply">
+                        {comment.child.map((item) => (
+                            <CommentItem
+                                key={`${key}-reply-${item}`}
+                                comment={item}
+                                level={2}
+                            />
+                        ))}
+                    </div>
+                </CollapseComponent>
+            )}
         </div>
     );
 };
