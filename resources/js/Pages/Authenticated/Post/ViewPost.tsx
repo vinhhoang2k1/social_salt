@@ -14,17 +14,28 @@ import { IPost } from "@/types/Web/Post";
 import { IComment } from "@/types/Web/Comment";
 import { IUser } from "@/types";
 import { IMedia } from "@/types/Web/Media";
+import { useState } from "react";
+import { removeAtMention } from "@/Utilities/function";
 interface IResponse extends IPost {
     comments: IComment[];
     create_by: IUser;
     medias: IMedia[];
 }
+export type TSelectReply =
+    | {
+          commentId: string;
+          replyTo: string;
+      }
+    | undefined;
 type Props = {} & IBasePropsPage<IResponse>;
+
 const ViewPost = ({ config, response }: Props) => {
+    const [selectReply, setSelectReply] = useState<TSelectReply>();
     const handleAddComment = (comment: string) => {
         router.post("/post/comment-create", {
             post_id: response.id,
-            content: comment,
+            content: removeAtMention(comment),
+            comment_parent: selectReply?.commentId
         });
     };
     return (
@@ -97,6 +108,7 @@ const ViewPost = ({ config, response }: Props) => {
                                         <Comment
                                             key={`comment-${comment.id}`}
                                             comment={comment}
+                                            setSelectReply={setSelectReply}
                                         />
                                     ))}
                                 </div>
@@ -119,9 +131,13 @@ const ViewPost = ({ config, response }: Props) => {
                                     <div className="posted">1d</div>
                                     <div className="input-comment">
                                         <InputComment
+                                            reply={selectReply}
                                             onClickPost={(value) => {
                                                 handleAddComment(value);
                                             }}
+                                            onClear={() =>
+                                                setSelectReply(undefined)
+                                            }
                                         />
                                     </div>
                                 </div>

@@ -53,7 +53,7 @@ class PostController extends Controller
             $data = $request->validated();
             $userId = Auth::user()->id;
             $data['user_id'] = $userId;
-            $comment = $this->postService->addCommentForPost($data);
+            $this->postService->addCommentForPost($data);
             return redirect()->back();
         } catch (\Exception $e) {
             //throw $th;

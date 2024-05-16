@@ -13,3 +13,8 @@ export function getTimeDifference(inputDate: string): string {
     }
 }
 
+export function removeAtMention(str: string) {
+    // Sử dụng biểu thức chính quy để tìm và thay thế chuỗi bắt đầu bằng @
+    return str.replace(/@\w+/, '');
+}
+

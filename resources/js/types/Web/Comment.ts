@@ -9,4 +9,5 @@ export interface IComment {
     created_at: string;
     updated_at: string;
     user: IUser
+    child: IComment[]
 }

@@ -69,7 +69,9 @@ class PostService
 
     public function findPostById(string $postId)
     {
-        $data = Post::with('comments.user')->find($postId);
+        $data = Post::with(['comments' => function ($query) {
+            $query->where('comment_parent', null);
+        }, 'comments.user', 'comments.child', 'comments.child.user'])->find($postId);
         $data->medias;
         $data->createBy;
         return $data;
