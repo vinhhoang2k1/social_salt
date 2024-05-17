@@ -34,6 +34,9 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::get('/follow/{id}', [ProfileController::class, 'addFollow']);
         Route::get('/{id}', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
+        Route::get('/unfollow/{id}', [ProfileController::class, 'unfollow']);
+
+
 
         Route::get('/bookmark', [ProfileController::class, 'getBookmarks']);
     });

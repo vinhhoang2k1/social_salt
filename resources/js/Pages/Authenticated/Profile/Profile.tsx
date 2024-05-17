@@ -184,30 +184,25 @@ const Profile = (props: Props) => {
                 ),
                 link: menu.saved,
             },
-            {
-                label: "TAGGED",
-                icon: (
-                    <TaggedIcon
-                        currentColor="#000"
-                        active={location.pathname == menu.tagged}
-                    />
-                ),
-                link: menu.tagged,
-            },
+            // {
+            //     label: "TAGGED",
+            //     icon: (
+            //         <TaggedIcon
+            //             currentColor="#000"
+            //             active={location.pathname == menu.tagged}
+            //         />
+            //     ),
+            //     link: menu.tagged,
+            // },
         ];
     }, [location.pathname, menu]);
 
     const handleFollow = () => {
-        const fetch = async () => {
-            const { data } = await fetcher.get(
-                `/profile/follow/${profileData.id}`,
-            );
-            if (data.success == true) {
-                // setFollowing(true);
-            }
-        };
-        fetch();
+        router.get(`/profile/follow/${profileData.id}`);
     };
+    const handleUnfollow = () => {
+        router.get('/profile/unfollow/' + profileData.id);
+    }
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
@@ -261,7 +256,7 @@ const Profile = (props: Props) => {
                                 ) : (
                                     <button
                                         className="blue-sky"
-                                        onClick={handleFollow}
+                                        onClick={() => {isFollowing ? handleUnfollow() :handleFollow()}}
                                     >
                                         {isFollowing ? "Following" : "Follow"}
                                     </button>

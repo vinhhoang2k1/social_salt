@@ -78,8 +78,17 @@ class UserService {
             $follow = Follow::query();
             $isFollowing = $follow->where('following_user_id', $followingUserId)
                 ->where('followed_user_id', $followerUserId)
-                ->exists();
+                ->first();
             return  $isFollowing;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function unFollowing(string $followingUserId, string $followerUserId) {
+        try {
+            Follow::where('followed_user_id', $followingUserId)->where('following_user_id', $followerUserId)->delete();
+            return true;
         } catch (\Throwable $th) {
             //throw $th;
         }
