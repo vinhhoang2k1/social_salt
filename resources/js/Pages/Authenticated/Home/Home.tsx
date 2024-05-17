@@ -1,8 +1,7 @@
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import { IResPost, IBasePropsPage, IResUser, IResPostMedia, IConfig } from "@/types/common/Common.type";
-import { router, usePage } from "@inertiajs/react";
+import { router, usePage, Head } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/inertia";
-import { Head } from "@inertiajs/react";
 import PortItem from "./components/PostItem";
 import "./style.scss";
 import { IReactPost } from "@/types/Web/ReactPost";
@@ -23,6 +22,9 @@ type Props = {
 const Home = (props: Props) => {
     const { posts, following } = props;
     const { basePath } = usePage<PageProps>().props.config as IConfig;
+
+    console.log(following);
+    
     
     return (
         <>
@@ -33,9 +35,9 @@ const Home = (props: Props) => {
                         <div className="suggest-followers">
                             {following.map((item, key) => (
                                 <div
+                                    onClick={() => router.get(`/profile/${item.id}`)}
                                     className="suggest-followers__item"
                                     key={`item-${key}`}
-                                    onClick={() => router.get(`/profile/${item.id}`)}
                                 >
                                 <img
                                     src={basePath + "/" + item.avatar}

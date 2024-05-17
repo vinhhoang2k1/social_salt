@@ -68,6 +68,7 @@ const PortItem = (props: Props) => {
                     onClick={() => router.get(`/profile/${post.user_id}`)}
                 >
                     <img
+                        onClick={() => router.get(`/profile/${user.id}`)}
                         src={basePath + "/" + user.avatar}
                         alt=""
                         className="circle author-avatar"
