@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helps\ResponseData;
 use App\Http\Requests\Web\CreateComment;
 use App\Http\Requests\Web\CreateCommentRequest;
+use App\Http\Requests\Web\CreateReactPostRequest;
 use App\Http\Requests\Web\Post\CreatePostRequest;
+use App\Models\ReactComment;
+use App\Models\ReactPost;
 use App\Services\PostService;
 use Exception;
 use Illuminate\Http\Request;
@@ -60,5 +64,44 @@ class PostController extends Controller
 
             return false;
         }
+    }
+    public function addReact(CreateReactPostRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $userId = Auth::user()->id;
+            $data['user_id'] = $userId;
+            $result = [];
+            if ($data['type'] == 'POST') {
+                $result = $this->postService->addReactForPost($data);
+            }
+            if ($data['type'] == 'COMMENT') {
+                $result = $this->postService->addReactForComment($data);
+            }
+            return (new ResponseData())->setStatus(true)
+                ->setMessage("React success")
+                ->setData($result->toArray())
+                ->getBodyResponse();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+    public function destroyReact(Request $request)
+    {
+        try {
+            $request = $request->all();
+            if ($request['type'] == 'POST') {
+                ReactPost::destroy($request['react_id']);
+            }
+            if ($request['type'] == 'COMMENT') {
+                ReactComment::destroy($request['react_id']);
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        return (new ResponseData())->setStatus(true)
+            ->setMessage("Delete react success")
+            ->setData([])
+            ->getBodyResponse();
     }
 }

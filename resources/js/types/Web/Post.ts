@@ -5,4 +5,5 @@ export interface IPost {
     mode: string;
     post_type: null | string;
     st_public: string;
+    user_id: string
 }

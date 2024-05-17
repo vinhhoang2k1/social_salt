@@ -5,7 +5,7 @@ import { removeAtMention } from "@/Utilities/function";
 type Props = {
     onClickPost: (value: string)=> void
     reply: TSelectReply | undefined
-    onClear: () => void
+    onClear?: () => void
 };
 
 const InputComment = (props: Props) => {
@@ -34,7 +34,7 @@ const InputComment = (props: Props) => {
                     if(!e.target.value && isShowBtnPost) {
                         setIsShowBtnPost(false)
                     }
-                    if(!e.target.value) {
+                    if(!e.target.value && props.onClear) {
                         props.onClear()
                     }
                 }}
