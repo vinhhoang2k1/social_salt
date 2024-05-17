@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helps\ResponseData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UpdateAvatarRequest;
 use App\Models\Follow;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +17,12 @@ use Inertia\Inertia;
 class ProfileController extends Controller
 {
     private $userService;
-    public function __construct(UserService $userService)
+    private $postService;
+
+    public function __construct(UserService $userService, PostService $postService)
     {
         $this->userService = $userService;
+        $this->postService = $postService;
     }
     public function getUserProfile(Request $request, $id = null)
     {
@@ -37,10 +42,12 @@ class ProfileController extends Controller
             $post->comments_count;
             $post['count_react'] = $post->total_reacts;
         }
+        $bookmarks = $this->postService->getListPostBookmark();
         return Inertia::render('Authenticated/Profile/Profile', [
             'profileData' => $profileData,
             'isFollowing' => $isFollowing,
             'posts' => $posts,
+            'bookmarked' => $bookmarks,
         ]);
     }
 
@@ -101,4 +108,12 @@ class ProfileController extends Controller
                 ->with('success', 'Successfully updated');
         }
     }
+    // public function getBookmarks()
+    // {
+    //     $result = $this->postService->getListPostBookmark();
+    //     return (new ResponseData())->setStatus(true)
+    //         ->setMessage("Add bookmark success")
+    //         ->setData($result->toArray())
+    //         ->getBodyResponse();
+    // }
 }

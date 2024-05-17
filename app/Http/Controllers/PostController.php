@@ -7,6 +7,7 @@ use App\Http\Requests\Web\CreateComment;
 use App\Http\Requests\Web\CreateCommentRequest;
 use App\Http\Requests\Web\CreateReactPostRequest;
 use App\Http\Requests\Web\Post\CreatePostRequest;
+use App\Models\BookmarkPost;
 use App\Models\ReactComment;
 use App\Models\ReactPost;
 use App\Services\PostService;
@@ -101,6 +102,34 @@ class PostController extends Controller
         }
         return (new ResponseData())->setStatus(true)
             ->setMessage("Delete react success")
+            ->setData([])
+            ->getBodyResponse();
+    }
+    public function addBookmark(Request $request)
+    {
+        $request = $request->all();
+        $userId = Auth::user()->id;
+        $request['user_id'] = $userId;
+        $result = [];
+        try {
+            $result = $this->postService->addBookmark($request);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        return (new ResponseData())->setStatus(true)
+            ->setMessage("Add bookmark success")
+            ->setData($result->toArray())
+            ->getBodyResponse();
+    }
+    public function destroyBookmark(Request $request)
+    {
+        try {
+            BookmarkPost::destroy($request['bookmark_id']);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        return (new ResponseData())->setStatus(true)
+            ->setMessage("Delete bookmark success")
             ->setData([])
             ->getBodyResponse();
     }

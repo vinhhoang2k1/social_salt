@@ -34,6 +34,8 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::get('/follow/{id}', [ProfileController::class, 'addFollow']);
         Route::get('/{id}', [ProfileController::class, 'getUserProfile'])->name('profile');
         Route::get('/', [ProfileController::class, 'getUserProfile'])->name('profile');
+
+        Route::get('/bookmark', [ProfileController::class, 'getBookmarks']);
     });
 
     Route::group(['prefix' => '/post'], function () {
@@ -44,7 +46,8 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::post('/react-create', [PostController::class, 'addReact']);
         Route::post('/react-delete', [PostController::class, 'destroyReact']);
 
-        Route::post('/comment-create', [PostController::class, 'addComment']);
+        Route::post('/bookmark-create', [PostController::class, 'addBookmark']);
+        Route::post('/bookmark-delete', [PostController::class, 'destroyBookmark']);
 
 
         Route::post('/create', [PostController::class, 'store']);

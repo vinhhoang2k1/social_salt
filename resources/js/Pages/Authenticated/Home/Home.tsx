@@ -5,6 +5,7 @@ import { PageProps } from "@inertiajs/inertia";
 import PortItem from "./components/PostItem";
 import "./style.scss";
 import { IReactPost } from "@/types/Web/ReactPost";
+import { IBookmarkPost } from "@/types/Web/BookmarkPost";
 
 export type PostData = {
     comments_count: number
@@ -12,6 +13,7 @@ export type PostData = {
     medias: Array<IResPostMedia>,
     reacted: IReactPost
     count_react: number
+    bookmarked: IBookmarkPost
 } & IResPost;
 
 type Props = {

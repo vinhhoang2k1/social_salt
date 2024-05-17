@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\BookmarkPost;
 use App\Models\Follow;
 use App\Models\Comment;
 use App\Models\Post;
@@ -32,6 +33,7 @@ class PostService
             $post->load('medias', 'createBy');
             $post->comments_count;
             $post['reacted'] = $post->reacted($userId);
+            $post['bookmarked'] = $post->bookmarked($userId);
             $post['count_react'] = $post->total_reacts;
         }
         return $posts;
@@ -111,5 +113,22 @@ class PostService
         $newReact = new ReactComment($data);
         $newReact->save();
         return $newReact;
+    }
+    public function addBookmark($data)
+    {
+        $newBookmark = new BookmarkPost($data);
+        $newBookmark->save();
+        return $newBookmark;
+    }
+    public function getListPostBookmark() {
+        $userId = Auth::user()->id;
+        $bookmarkedPosts = BookmarkPost::with('post')->where('user_id', $userId)->get();
+        foreach ($bookmarkedPosts as &$bookmark) {
+            $post = $bookmark->post;
+            $post['count_react'] = $post->total_reacts;
+            $post['count_comment'] = $post->comments_count;
+            $post->medias;
+        }
+        return $bookmarkedPosts;
     }
 }
