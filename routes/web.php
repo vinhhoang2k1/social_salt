@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\Web\FeedController;
 use App\Http\Controllers\Web\SearchController;
 use App\Http\Controllers\Web\UploadController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,6 +41,9 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::get('/view/{postId}', [PostController::class, 'view']);
 
         Route::post('/comment-create', [PostController::class, 'addComment']);
+        Route::post('/react-create', [PostController::class, 'addReact']);
+        Route::post('/react-delete', [PostController::class, 'destroyReact']);
+
         Route::post('/create', [PostController::class, 'store']);
     });
     Route::prefix('search')->group(function () {

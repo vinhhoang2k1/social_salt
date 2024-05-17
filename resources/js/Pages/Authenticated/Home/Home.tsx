@@ -1,15 +1,17 @@
 import AuthenticateLayout from "@/Layouts/AuthenticateLayout";
 import { IResPost, IBasePropsPage, IResUser, IResPostMedia, IConfig } from "@/types/common/Common.type";
-import { usePage } from "@inertiajs/react";
+import { router, usePage, Head } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/inertia";
-import { Head, router } from "@inertiajs/react";
 import PortItem from "./components/PostItem";
 import "./style.scss";
+import { IReactPost } from "@/types/Web/ReactPost";
 
 export type PostData = {
     comments_count: number
     create_by: IResUser,
     medias: Array<IResPostMedia>,
+    reacted: IReactPost
+    count_react: number
 } & IResPost;
 
 type Props = {

@@ -319,7 +319,7 @@ const Profile = (props: Props) => {
                                                 value={'POSTS'}
                                             >
                                                 <img
-                                                    src={basePath + "/" + post.medias[0].media_path}
+                                                    src={basePath + "/" + post.medias[0]?.media_path}
                                                     alt=""
                                                 />
                                                
