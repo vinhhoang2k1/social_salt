@@ -120,13 +120,9 @@ const PortItem = (props: Props) => {
             <div className="post__item-content">
                 {/* render type in here */}
                 {/* type video audio */}
-                {/* <div className="video">
-                    <video controls>
-                        <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
-                    </video>
-                </div> */}
+               
 
-                <Slide images={mediaPaths} />
+                <Slide data={post.medias} />
             </div>
             <div className="post__item-action">
                 <div className="react__list flex justify-between">

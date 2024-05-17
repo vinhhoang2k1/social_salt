@@ -24,9 +24,6 @@ type Props = {
 const Home = (props: Props) => {
     const { posts, following } = props;
     const { basePath } = usePage<PageProps>().props.config as IConfig;
-
-    console.log(following);
-    
     
     return (
         <>
