@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $isFollowing = false;
         if ($id) {
             $userId = $id;
-            $isFollowing = $this->userService->checkFollowing($id, $userId);
+            $isFollowing = $this->userService->checkFollowing(Auth::user()->id, $userId);
         }
         $profileData = User::with('followers', 'following')->find($userId);
         $posts = Post::withCount('comments')
@@ -83,16 +83,13 @@ class ProfileController extends Controller
     {
         $authorId = Auth::user()->id;
         $newFollow = $this->userService->follow($id, $authorId);
-        if ($newFollow) {
-            return  redirect()->back()->with([
-                'success' => true,
-                'message' => 'Follow successfully',
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => 'Follow failure',
-        ]);
+        // if (isset($newFollow)) {
+        //     return  redirect()->back()->with([
+        //         'success' => true,
+        //         'message' => 'Follow successfully',
+        //     ]);
+        // }
+        return redirect()->back();
     }
 
     public function updateAvatar(UpdateAvatarRequest $updateAvatarRequest)
