@@ -1,4 +1,4 @@
-@import"./variable.scss";
+@import "./variable.scss";
 .circle {
     border-radius: 50%;
 }
@@ -10,4 +10,43 @@
     background-color: $blueColor;
     border-radius: 6px;
     padding: 5px 20px;
+}
+.slide {
+    .video {
+        height: 350px;
+        background-color: #000;
+        border-radius: 5px;
+        overflow: hidden;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .image {
+        position: relative;
+        background-color: #000;
+        border-radius: 5px;
+        height: 350px;
+        .slide {
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .navigation {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            .nav-icon {
+                width: 30px;
+                height: 30px;
+                background-color: #ffffff70;
+                cursor: pointer;
+            }
+        }
+    }
 }

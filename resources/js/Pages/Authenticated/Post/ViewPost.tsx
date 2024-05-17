@@ -18,6 +18,7 @@ import { useMemo, useState } from "react";
 import { removeAtMention } from "@/Utilities/function";
 import { IReactPost } from "@/types/Web/ReactPost";
 import { fetcher } from "@/Api/Axios";
+import Slide from "../Home/components/Slide";
 export interface IResponse extends IPost {
     comments: ICommentPost[];
     create_by: IUser;
@@ -89,13 +90,14 @@ const ViewPost = ({ config, response }: Props) => {
                 >
                     <DialogBody>
                         <div id="post__view" className="flex ">
-                            <div className="show-media">
-                                <video controls>
+                            <div className="show-media slide">
+                                {/* <video controls>
                                     <source
                                         src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                                         type="video/mp4"
                                     />
-                                </video>
+                                </video> */}
+                                <Slide data={response.medias}/>
                             </div>
                             <div className="content">
                                 <div className="author flex items-center justify-between">
