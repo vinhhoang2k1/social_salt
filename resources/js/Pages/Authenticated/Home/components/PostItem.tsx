@@ -168,13 +168,13 @@ const PortItem = (props: Props) => {
                 <span className="text">{post?.content}</span>
             </div>
             <div className="post__item-tags">
-                {Array(5)
+                {/* {Array(5)
                     .fill(null)
                     .map((item, i) => (
                         <span key={`tag-${i}`} className="tag">
                             #name_{i}
                         </span>
-                    ))}
+                    ))} */}
             </div>
             <div
                 className="post__item-all-comments"
