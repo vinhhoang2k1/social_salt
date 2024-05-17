@@ -113,4 +113,11 @@ class ProfileController extends Controller
     //         ->setData($result->toArray())
     //         ->getBodyResponse();
     // }
+
+    public function unfollow($following)
+    {
+        $follower = Auth::user()->id;
+        $this->userService->unFollowing($following, $follower);
+        return redirect()->back();
+    }
 }
