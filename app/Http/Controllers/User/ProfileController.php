@@ -21,18 +21,22 @@ class ProfileController extends Controller
     }
     public function getUserProfile(Request $request, $id = null)
     {
-        $userId = Auth::user()->id; 
+        $userId = Auth::user()->id;
         $isFollowing = false;
         if ($id) {
             $userId = $id;
             $isFollowing = $this->userService->checkFollowing($id, $userId);
         }
         $profileData = User::with('followers', 'following')->find($userId);
-        $posts = Post::with('medias')
+        $posts = Post::withCount('comments')
             ->where('user_id', $userId)
-            ->withCount('comments')
             ->latest()
             ->get();
+        foreach ($posts as &$post) {
+            $post->load('medias');
+            $post->comments_count;
+            $post['count_react'] = $post->total_reacts;
+        }
         return Inertia::render('Authenticated/Profile/Profile', [
             'profileData' => $profileData,
             'isFollowing' => $isFollowing,
@@ -40,8 +44,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getFollowing($id = null) {
-        $userId = Auth::user()->id; 
+    public function getFollowing($id = null)
+    {
+        $userId = Auth::user()->id;
         if ($id) {
             $userId = $id;
         }
@@ -53,8 +58,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getFollowers($id) {
-        $userId = Auth::user()->id; 
+    public function getFollowers($id)
+    {
+        $userId = Auth::user()->id;
         if ($id) {
             $userId = $id;
         }
@@ -66,7 +72,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function addFollow($id) {
+    public function addFollow($id)
+    {
         $authorId = Auth::user()->id;
         $newFollow = $this->userService->follow($id, $authorId);
         if ($newFollow) {
@@ -82,8 +89,8 @@ class ProfileController extends Controller
     }
 
     public function updateAvatar(UpdateAvatarRequest $updateAvatarRequest)
-    {   
-        if(Auth::user()->avatar) {
+    {
+        if (Auth::user()->avatar) {
             $this->userService->deleteOldAvatar(Auth::user()->avatar);
         }
         $path = $this->userService->saveAvatarFile($updateAvatarRequest->file('file'));

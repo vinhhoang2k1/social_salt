@@ -330,7 +330,7 @@ const Profile = (props: Props) => {
                                                     <div className="media__info">
                                                         <div className="like">
                                                             <HeartIcon />
-                                                            <span>{Math.floor(Math.random() * 100) + 1}</span>
+                                                            <span>{post.count_react}</span>
                                                         </div>
                                                         <div className="comment">
                                                             <CommentIcon />

@@ -44,6 +44,9 @@ Route::middleware(['auth', 'check_permission_guest'])->group(function () {
         Route::post('/react-create', [PostController::class, 'addReact']);
         Route::post('/react-delete', [PostController::class, 'destroyReact']);
 
+        Route::post('/comment-create', [PostController::class, 'addComment']);
+
+
         Route::post('/create', [PostController::class, 'store']);
     });
     Route::prefix('search')->group(function () {
