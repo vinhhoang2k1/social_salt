@@ -55,4 +55,8 @@ class Post extends Model
         return $this->reactPost()->count();
 
     }
+    public function bookmarked($userId)
+    {
+        return $this->hasOne(BookmarkPost::class, 'post_id')->where('user_id', $userId)->first();
+    }
 }

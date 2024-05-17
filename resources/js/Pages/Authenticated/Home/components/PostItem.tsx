@@ -6,6 +6,8 @@ import { getTimeDifference } from "@/Utilities/function";
 import { IConfig, IResPostMedia, IResUser } from "@/types/common/Common.type";
 import { PageProps } from "@inertiajs/inertia";
 import { router, usePage } from "@inertiajs/react";
+import { FaRegBookmark } from "react-icons/fa";
+import { GoBookmarkFill } from "react-icons/go";
 import { PostData } from "../Home";
 import InputComment from "./InputComment";
 import Slide from "./Slide";
@@ -19,6 +21,9 @@ const PortItem = (props: Props) => {
     const { user, post, medias } = props;
     const { basePath } = usePage<PageProps>().props.config as IConfig;
     const [drafReact, setDrafReact] = useState<string>(post.reacted?.id);
+    const [drafBookmark, setDrafBookmark] = useState<string>(
+        post.bookmarked?.id,
+    );
     const mediaPaths = medias.map((media) => {
         return basePath + "/" + media.media_path;
     });
@@ -50,6 +55,19 @@ const PortItem = (props: Props) => {
         }
         return {};
     }, [post.reacted, drafReact]);
+    const statusBookmarkPost = useMemo(() => {
+        if (!drafBookmark) {
+            return {};
+        }
+        if (post.bookmarked?.id || drafBookmark) {
+            return {
+                active: true,
+                currentColor: "red",
+                id: post.bookmarked?.id || drafBookmark,
+            };
+        }
+        return {};
+    }, [post.bookmarked, drafBookmark]);
 
     const handleUnReact = async (reactId: string) => {
         const result = await fetcher.post("/post/react-delete", {
@@ -58,6 +76,22 @@ const PortItem = (props: Props) => {
         });
         if (result.data.status) {
             setDrafReact("");
+        }
+    };
+    const handleAddBookmark = async (postId: string) => {
+        const result = await fetcher.post("/post/bookmark-create", {
+            post_id: postId,
+        });
+        if (result.data.status) {
+            setDrafBookmark(result.data?.data?.id);
+        }
+    };
+    const handleUnBookmark = async (bookmarkId: string) => {
+        const result = await fetcher.post("/post/bookmark-delete", {
+            bookmark_id: bookmarkId,
+        });
+        if (result.data.status) {
+            setDrafBookmark("");
         }
     };
     return (
@@ -95,23 +129,39 @@ const PortItem = (props: Props) => {
                 <Slide images={mediaPaths} />
             </div>
             <div className="post__item-action">
-                <div className="react__list">
-                    <span
-                        className="react__item"
+                <div className="react__list flex justify-between">
+                    <div className="flex items-center gap-2">
+                        <span
+                            className="react__item"
+                            onClick={() => {
+                                statusReactPost?.id
+                                    ? handleUnReact(statusReactPost?.id)
+                                    : handleAddReact();
+                            }}
+                        >
+                            <NotificationIcon {...statusReactPost} />
+                        </span>
+                        <span className="react__item">
+                            <CommentIcon />
+                        </span>
+                        <span className="react__item">
+                            <ShareIcon />
+                        </span>
+                    </div>
+                    <div
+                        style={{ cursor: "pointer" }}
                         onClick={() => {
-                            statusReactPost?.id
-                                ? handleUnReact(statusReactPost?.id)
-                                : handleAddReact();
+                            statusBookmarkPost?.id
+                                ? handleUnBookmark(statusBookmarkPost?.id)
+                                : handleAddBookmark(post.id);
                         }}
                     >
-                        <NotificationIcon {...statusReactPost} />
-                    </span>
-                    <span className="react__item">
-                        <CommentIcon />
-                    </span>
-                    <span className="react__item">
-                        <ShareIcon />
-                    </span>
+                        {statusBookmarkPost?.id ? (
+                            <GoBookmarkFill />
+                        ) : (
+                            <FaRegBookmark />
+                        )}
+                    </div>
                 </div>
                 <div className="liked">
                     {post.count_react > 0 && post.count_react} likes

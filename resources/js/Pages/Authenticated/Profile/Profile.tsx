@@ -37,11 +37,21 @@ import {
     TabPanel,
     Avatar,
 } from "@material-tailwind/react";
-
+import { IBookmarkPost } from "@/types/Web/BookmarkPost";
+import { IPost } from "@/types/Web/Post";
+import { IMedia } from "@/types/Web/Media";
+type ICSBookmarkPost = {
+    post: {
+        medias: IMedia[];
+        count_comment: number;
+        count_react: number;
+    } & IPost;
+} & IBookmarkPost;
 type Props = {
     profileData: IResUser;
     isFollowing: boolean;
     posts: Array<IResPost>;
+    bookmarked: ICSBookmarkPost[];
 } & IBasePropsPage<{}>;
 
 type ModalProps = {
@@ -49,7 +59,7 @@ type ModalProps = {
     heading: string;
     openLabel: string;
     apiPath: string;
-}
+};
 
 const menu = {
     posts: "/",
@@ -59,7 +69,7 @@ const menu = {
 
 export function FollowModal(props: ModalProps) {
     const [follows, setFollows] = useState<IResUser[]>([]);
-    const {config, heading, openLabel, apiPath } = props;
+    const { config, heading, openLabel, apiPath } = props;
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
@@ -69,7 +79,6 @@ export function FollowModal(props: ModalProps) {
         };
         fetch();
     }, []);
-
 
     const handleOpen = () => setOpen((cur) => !cur);
 
@@ -113,18 +122,28 @@ export function FollowModal(props: ModalProps) {
                     </div>
                     <ul className="mt-4">
                         {follows?.map((item, key) => (
-                            <div key={key} className="follow-item flex items-center my-2">
-                                <a href={`/profile/${item.id}`} className="flex items-center">
-                                    <img 
+                            <div
+                                key={key}
+                                className="follow-item my-2 flex items-center"
+                            >
+                                <a
+                                    href={`/profile/${item.id}`}
+                                    className="flex items-center"
+                                >
+                                    <img
                                         style={{
-                                            width: '48px',
-                                            height: '48px',
-                                            borderRadius: '50%'
+                                            width: "48px",
+                                            height: "48px",
+                                            borderRadius: "50%",
                                         }}
-                                        src={config.basePath + "/" + item.avatar} 
-                                        alt={item.fullname} 
+                                        src={
+                                            config.basePath + "/" + item.avatar
+                                        }
+                                        alt={item.fullname}
                                     />
-                                    <span className="px-2">{item.fullname}</span>
+                                    <span className="px-2">
+                                        {item.fullname}
+                                    </span>
                                 </a>
                             </div>
                         ))}
@@ -136,15 +155,13 @@ export function FollowModal(props: ModalProps) {
 }
 
 const Profile = (props: Props) => {
-    const {config, auth, profileData, isFollowing, posts } = props;
+    const { config, auth, profileData, isFollowing, posts, bookmarked } = props;
     const [activeTab, setActiveTab] = useState("posts");
-    const [avatarUrl, setAvatarUrl] = useState("");
     const inputAvatarRef = useRef<HTMLInputElement>(null);
     const { basePath } = usePage<PageProps>().props.config as IConfig;
 
-    
-    console.log('isFollowing,', isFollowing);
-    
+    console.log("isFollowing,", isFollowing);
+
     const menus = useMemo(() => {
         return [
             {
@@ -182,13 +199,15 @@ const Profile = (props: Props) => {
 
     const handleFollow = () => {
         const fetch = async () => {
-            const { data } = await fetcher.get(`/profile/follow/${profileData.id}`);
+            const { data } = await fetcher.get(
+                `/profile/follow/${profileData.id}`,
+            );
             if (data.success == true) {
                 // setFollowing(true);
             }
         };
         fetch();
-    }
+    };
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
@@ -236,10 +255,15 @@ const Profile = (props: Props) => {
                                 </h3>
 
                                 {profileData.id == auth.user.id ? (
-                                    <a href="/" className="grey">Edit profile</a>
+                                    <a href="/" className="grey">
+                                        Edit profile
+                                    </a>
                                 ) : (
-                                    <button className="blue-sky" onClick={handleFollow}>
-                                         {isFollowing ? "Following" : "Follow"}
+                                    <button
+                                        className="blue-sky"
+                                        onClick={handleFollow}
+                                    >
+                                        {isFollowing ? "Following" : "Follow"}
                                     </button>
                                 )}
                                 {/* <a href="/" className="grey">
@@ -284,20 +308,26 @@ const Profile = (props: Props) => {
 
                     <div className="social-media">
                         <div className="add-btn">
-                            <button className="" onClick={() => router.get('/post/create')}>
+                            <button
+                                className=""
+                                onClick={() => router.get("/post/create")}
+                            >
                                 <Plus />
                             </button>
                             <span>New</span>
                         </div>
 
                         <div className="media-list">
-                            <Tabs value={'POSTS'}>
+                            <Tabs value={"POSTS"}>
                                 <TabsHeader>
                                     {menus.map((menu, key) => (
                                         <Tab
                                             key={key}
                                             value={menu.label}
                                             className="label"
+                                            onClick={() =>
+                                                handleTabClick(menu.label)
+                                            }
                                         >
                                             <div className="group-btn">
                                                 <span className="icon">
@@ -316,25 +346,92 @@ const Profile = (props: Props) => {
                                             <TabPanel
                                                 className="media__item"
                                                 key={key}
-                                                value={'POSTS'}
+                                                value={"POSTS"}
                                             >
                                                 <img
-                                                    src={basePath + "/" + post.medias[0]?.media_path}
+                                                    src={
+                                                        basePath +
+                                                        "/" +
+                                                        post.medias[0]
+                                                            ?.media_path
+                                                    }
                                                     alt=""
                                                 />
-                                               
-                                                <div 
-                                                    onClick={() => router.get(`/post/view/${post.id}`)}
+
+                                                <div
+                                                    onClick={() =>
+                                                        router.get(
+                                                            `/post/view/${post.id}`,
+                                                        )
+                                                    }
                                                     className="media__preview"
                                                 >
                                                     <div className="media__info">
                                                         <div className="like">
                                                             <HeartIcon />
-                                                            <span>{post.count_react}</span>
+                                                            <span>
+                                                                {
+                                                                    post.count_react
+                                                                }
+                                                            </span>
                                                         </div>
                                                         <div className="comment">
                                                             <CommentIcon />
-                                                            <span>{post.comments_count}</span>
+                                                            <span>
+                                                                {
+                                                                    post.comments_count
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </TabPanel>
+                                        ))}
+
+                                        {bookmarked.map((bookmark, key) => (
+                                            <TabPanel
+                                                className="media__item"
+                                                key={key}
+                                                value={"SAVED"}
+                                            >
+                                                <img
+                                                    src={
+                                                        basePath +
+                                                        "/" +
+                                                        bookmark.post.medias[0]
+                                                            ?.media_path
+                                                    }
+                                                    alt=""
+                                                />
+
+                                                <div
+                                                    onClick={() =>
+                                                        router.get(
+                                                            `/post/view/${bookmark.post.id}`,
+                                                        )
+                                                    }
+                                                    className="media__preview"
+                                                >
+                                                    <div className="media__info">
+                                                        <div className="like">
+                                                            <HeartIcon />
+                                                            <span>
+                                                                {
+                                                                    bookmark
+                                                                        .post
+                                                                        .count_react
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div className="comment">
+                                                            <CommentIcon />
+                                                            <span>
+                                                                {
+                                                                    bookmark
+                                                                        .post
+                                                                        .count_comment
+                                                                }
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
