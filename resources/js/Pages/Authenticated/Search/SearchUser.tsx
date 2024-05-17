@@ -70,29 +70,34 @@ const SearchUser = ({ response }: Props) => {
                             </div>
                         </div> */}
                         <div className="result">
-                            <div className="">
-                                {response && response.map((user) => (
-                                    <div
-                                        onClick={() => router.get(`/profile/${user.id}`)}
-                                        key={`result-${user.id}`}
-                                        className="result__item flex gap-2"
-                                    >
-                                        <div className="avatar">
-                                            <img
-                                                src={`${basePath}/${user.avatar}`}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="info">
-                                            <div className="name">
-                                                {user.fullname}
+                            <div className="grid grid-cols-1 gap-4 p-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 ">
+                                {response &&
+                                    response.map((user) => (
+                                        <div
+                                            onClick={() =>
+                                                router.get(
+                                                    `/profile/${user.id}`,
+                                                )
+                                            }
+                                            key={`result-${user.id}`}
+                                            className="result__item flex gap-2"
+                                        >
+                                            <div className="avatar">
+                                                <img
+                                                    src={`${basePath}/${user.avatar}`}
+                                                    alt=""
+                                                />
                                             </div>
-                                            <div className="talk">
-                                                NOTHING IS IMPOSSIBLE
+                                            <div className="info">
+                                                <div className="name">
+                                                    {user.fullname}
+                                                </div>
+                                                <div className="talk">
+                                                    NOTHING IS IMPOSSIBLE
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                         </div>
                     </div>

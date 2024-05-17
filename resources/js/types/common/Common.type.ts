@@ -31,6 +31,7 @@ export interface IResPost {
     st_public: number,
     medias: Array<IResPostMedia>,
     comments_count: number,
+    count_react: number
 }
 export interface IResPostMedia {
     id: string,
